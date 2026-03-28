@@ -634,10 +634,14 @@ nav a.active {
     justify-content: center;
     font-size: 16px;
     transition: all var(--transition);
-}
 .phone-link {
     text-decoration: none;
-    color: inherit;
+    color: white;
+    font-weight: 500;
+}
+
+.phone-link:hover {
+    opacity: 0.8;
 }
 
 .view-btn.active,
