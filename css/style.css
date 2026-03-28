@@ -646,13 +646,13 @@ nav a.active {
     opacity: 0.8;
 }
 
-.2gis-link {
+.gis-link {
     text-decoration: none;
     color: white;
     font-weight: 500;
 }
 
-.2gis-link:hover {
+.gis-link:hover {
     opacity: 0.8;
 }
 
