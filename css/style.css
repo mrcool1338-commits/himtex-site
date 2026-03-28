@@ -656,5 +656,15 @@ nav a.active {
     opacity: 0.8;
 }
 
+.inst {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+.inst:hover {
+    opacity: 0.8;
+}
+
 .view-btn.active,
 .view-btn
