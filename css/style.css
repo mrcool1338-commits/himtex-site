@@ -635,6 +635,10 @@ nav a.active {
     font-size: 16px;
     transition: all var(--transition);
 }
+.phone-link {
+    text-decoration: none;
+    color: inherit;
+}
 
 .view-btn.active,
 .view-btn
