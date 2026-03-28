@@ -666,5 +666,10 @@ nav a.active {
     opacity: 0.8;
 }
 
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
 .view-btn.active,
 .view-btn
