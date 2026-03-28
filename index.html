@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моющие средства - UPack.kz</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧴</text></svg>">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="header-top">
+        <div class="container">
+            <span>📞 +7 (727) 123-45-67 | Алматы, ул. Примерная, 10</span>
+            <span>Бесплатная доставка от 15 000 тг</span>
+        </div>
+    </div>
+    <div class="header-main">
+        <div class="container">
+            <a href="index.html" class="logo">U<span>Pack</span>.kz</a>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск товаров...">
+                <button onclick="searchProducts()">🔍 Найти</button>
+            </div>
+            <div class="header-actions">
+                <a href="#">
+                    <span class="icon">👤</span>
+                    <span>Войти</span>
+                </a>
+                <a href="#">
+                    <span class="icon">❤️</span>
+                    <span>Избранное</span>
+                    <span class="fav-count" id="favCount">0</span>
+                </a>
+                <a href="#" onclick="toggleCart(event)">
+                    <span class="icon cart-icon-wrap">
+                        🛒
+                        <span class="badge" id="cartBadge">0</span>
+                    </span>
+                    <span>Корзина</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav>
+        <div class="container">
+            <a href="#">Главная</a>
+            <a href="#" class="active">Бытовая химия</a>
+            <a href="#">Упаковка</a>
+            <a href="#">Инвентарь</a>
+            <a href="#">Расходники</a>
+            <a href="#">Акции 🔥</a>
+            <a href="#">О нас</a>
+            <a href="#">Контакты</a>
+        </div>
+    </nav>
+</header>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart(event)"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+        <h3>🛒 Корзина</h3>
+        <button onclick="toggleCart(event)" class="cart-close">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+            <span>🛒</span>
+            <p>Корзина пуста</p>
+        </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+        <div class="cart-total">
+            Итого: <strong id="cartTotal">0 тг</strong>
+        </div>
+        <button class="btn-checkout">Оформить заказ</button>
+    </div>
+</div>
+
+<!-- ===== BREADCRUMB ===== -->
+<div class="container">
+    <div class="breadcrumb">
+        <a href="#">Главная</a>
+        <span>›</span>
+        <a href="#">Бытовая химия</a>
+        <span>›</span>
+        Моющие средства
+    </div>
+</div>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="page-header">
+    <div class="container">
+        <h1>🧴 Моющие средства</h1>
+        <p>Профессиональная химия для дома, ресторанов и промышленности.</p>
+    </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="container">
+    <div class="main-content">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar">
+            <button class="mobile-filter-btn" onclick="toggleFilters()">⚙️ Фильтры</button>
+
+            <div class="filters-wrap" id="filtersWrap">
+
+                <div class="filter-block">
+                    <h3>📂 Категории</h3>
+                    <ul class="categories-list" id="categoriesList">
+                        <li><a href="#" class="active" data-cat="all">Все <span class="cat-count">0</span></a></li>
+                        <li><a href="#" data-cat="dishes">Посуда <span class="cat-count">0</span></a></li>
+                        <li><a href="#" data-cat="floor">Пол <span class="cat-count">0</span></a></li>
+                        <li><a href="#" data-cat="glass">Стёкла <span class="cat-count">0</span></a></li>
+                        <li><a href="#" data-cat="universal">Универсальные <span class="cat-count">0</span></a></li>
+                        <li><a href="#" data-cat="disinfect">Дезинфекция <span class="cat-count">0</span></a></li>
+                        <li><a href="#" data-cat="plumbing">Сантехника <span class="cat-count">0</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="filter-block">
+                    <h3>💰 Цена (тг)</h3>
+                    <div class="price-range">
+                        <div class="price-inputs">
+                            <input type="number" id="priceMin" placeholder="От 0">
+                            <input type="number" id="priceMax" placeholder="До 50000">
+                        </div>
+                        <button class="btn-filter" onclick="applyFilters()">Применить</button>
+                    </div>
+                </div>
+
+                <div class="filter-block">
+                    <h3>🏷️ Бренд</h3>
+                    <div id="brandFilters"></div>
+                </div>
+
+                <div class="filter-block">
+                    <h3>📦 Объём</h3>
+                    <div class="filter-item">
+                        <input type="checkbox" id="v1" data-vol="small">
+                        <label for="v1">До 500 мл</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="v2" data-vol="medium">
+                        <label for="v2">500 мл — 1 л</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="v3" data-vol="large">
+                        <label for="v3">1 — 5 л</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="v4" data-vol="xlarge">
+                        <label for="v4">5 — 20 л</label>
+                    </div>
+                </div>
+
+                <div class="filter-block">
+                    <h3>✅ Наличие</h3>
+                    <div class="filter-item">
+                        <input type="checkbox" id="instock" checked>
+                        <label for="instock">В наличии</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="onorder">
+                        <label for="onorder">Под заказ</label>
+                    </div>
+                </div>
+
+                <button class="btn-filter btn-reset" onclick="resetFilters()">🔄 Сбросить фильтры</button>
+            </div>
+        </aside>
+
+        <!-- ===== PRODUCTS ===== -->
+        <div class="products-section">
+
+            <div class="promo-banner">
+                <div class="promo-text">
+                    <h3>🔥 Скидка 20% на оптовые заказы</h3>
+                    <p>При заказе от 50 кг или 100 единиц товара</p>
+                </div>
+                <button class="promo-btn">Подробнее</button>
+            </div>
+
+            <div class="products-toolbar">
+                <span class="results-count">Найдено: <strong id="resultsCount">0</strong> товаров</span>
+                <div class="toolbar-right">
+                    <select class="sort-select" id="sortSelect" onchange="sortProducts()">
+                        <option value="popular">По популярности</option>
+                        <option value="price-asc">По цене (дешевле)</option>
+                        <option value="price-desc">По цене (дороже)</option>
+                        <option value="newest">По новизне</option>
+                        <option value="rating">По рейтингу</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')">⊞</button>
+                        <button class="view-btn" id="listViewBtn" onclick="setView('list')">☰</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid"></div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display:none">
+                <span>🔍</span>
+                <h3>Товары не найдены</h3>
+                <p>Попробуйте изменить параметры фильтра</p>
+                <button class="btn-filter" onclick="resetFilters()">Сбросить фильтры</button>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ===== TOAST NOTIFICATION ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>UPack.kz</h4>
+                <p style="font-size:13px;color:#aaa;line-height:1.7">
+                    Профессиональная упаковка и бытовая химия оптом и в розницу по всему Казахстану.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Каталог</h4>
+                <ul>
+                    <li><a href="#">Бытовая химия</a></li>
+                    <li><a href="#">Моющие средства</a></li>
+                    <li><a href="#">Упаковочные материалы</a></li>
+                    <li><a href="#">Хозяйственный инвентарь</a></li>
+                    <li><a href="#">Расходные материалы</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Покупателям</h4>
+                <ul>
+                    <li><a href="#">Как сделать заказ</a></li>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Возврат товара</a></li>
+                    <li><a href="#">Акции и скидки</a></li>
+                    <li><a href="#">Программа лояльности</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <ul>
+                    <li><a href="#">📞 +7 (727) 123-45-67</a></li>
+                    <li><a href="#">📧 info@upack.kz</a></li>
+                    <li><a href="#">📍 Алматы, ул. Примерная, 10</a></li>
+                    <li><a href="#">🕐 Пн-Пт: 9:00 - 18:00</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 UPack.kz — Все права защищены</p>
+        </div>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
