@@ -707,4 +707,8 @@ nav a.active {
 }
 
 .view-btn.active,
-.view-btn
+.view-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
