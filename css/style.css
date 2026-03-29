@@ -53,7 +53,7 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 8px;
 }
 
 /* ===========================
@@ -67,24 +67,29 @@ header {
     z-index: 1000;
 }
 
-.header-main { padding: 15px 0; }
+.header-main {
+    padding: 12px 0;
+}
 
 .header-main .container {
     display: flex;
     align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: 25px;
+    flex-wrap: nowrap;
 }
 
 .logo {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--primary);
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    letter-spacing: -1px;
+    flex-shrink: 0;
 }
 
-.logo span { color: var(--accent); }
+.logo-img {
+    height: 70px;
+    width: auto;
+    display: block;
+}
 
 /* ===========================
    SEARCH BAR
@@ -93,7 +98,7 @@ header {
     display: flex;
     flex: 1;
     max-width: 600px;
-    min-width: 200px;
+    min-width: 220px;
 }
 
 .search-bar input {
@@ -123,15 +128,19 @@ header {
     white-space: nowrap;
 }
 
-.search-bar button:hover { background: var(--accent); }
+.search-bar button:hover {
+    background: var(--accent);
+}
 
 /* ===========================
    HEADER ACTIONS
 =========================== */
 .header-actions {
+    margin-left: auto;
     display: flex;
-    gap: 20px;
+    gap: 22px;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .header-actions a {
@@ -141,12 +150,15 @@ header {
     flex-direction: column;
     align-items: center;
     font-size: 12px;
-    gap: 3px;
+    gap: 4px;
     transition: color var(--transition);
     position: relative;
+    min-width: 55px;
 }
 
-.header-actions a:hover { color: var(--primary); }
+.header-actions a:hover {
+    color: var(--primary);
+}
 
 .header-actions .icon {
     font-size: 22px;
@@ -188,6 +200,23 @@ header {
     align-items: center;
     justify-content: center;
     font-weight: bold;
+}
+
+/* ===========================
+   HEADER LINKS
+=========================== */
+.phone-link,
+.gis-link,
+.inst {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+.phone-link:hover,
+.gis-link:hover,
+.inst:hover {
+    opacity: 0.8;
 }
 
 /* ===========================
