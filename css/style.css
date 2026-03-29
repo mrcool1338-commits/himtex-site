@@ -671,5 +671,11 @@ nav a.active {
     width: auto;
 }
 
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .view-btn.active,
 .view-btn
