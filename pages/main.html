@@ -22,47 +22,46 @@
             </span>
             <span>Бесплатная доставка от 500 000 тг</span>
         </div>
-     </div>
+    </div>
 
-<!-- ===== HEADER ===== -->
-<header class="header">
-    <div class="container">
-        <div class="header-inner">
-            <a href="../pages/main.html" class="logo">Himtex <em>Asia</em> Plus</a>
-            <div class="search-wrap">
+    <div class="header-main">
+        <div class="container">
+            <a href="../index.html" class="logo">
+                <img src="../img/logo.png" alt="Himtex Asia Plus" class="logo-img">
+            </a>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск товаров, брендов...">
+                <button onclick="handleSearch()">Найти</button>
             </div>
-            <div class="h-actions">
-                <button class="h-action">
-                    <span class="ico">👤</span>
+            <div class="header-actions">
+                <a href="#">
+                    <span class="icon">👤</span>
                     <span>Войти</span>
-                </button>
-                <button class="h-action" onclick="toggleFav()">
-                    <span class="ico">❤️</span>
+                </a>
+                <a href="#" onclick="toggleFav()">
+                    <span class="icon">❤️</span>
                     <span>Избранное</span>
-                    <span class="h-badge" id="favBadge" style="display:none">0</span>
-                </button>
-                <button class="h-action" onclick="openCart()">
-                    <span class="ico">🛒</span>
+                    <span class="fav-count" id="favBadge" style="display:none">0</span>
+                </a>
+                <a href="#" onclick="openCart()">
+                    <span class="icon cart-icon-wrap">🛒
+                        <span class="badge" id="cartBadge" style="display:none">0</span>
+                    </span>
                     <span>Корзина</span>
-                    <span class="h-badge" id="cartBadge" style="display:none">0</span>
-                </button>
+                </a>
             </div>
         </div>
     </div>
 
     <!-- NAV -->
     <nav class="nav">
+    <nav>
         <div class="container">
-            <div class="nav-inner">
-                <a href="../pages/main.html" class="nav-link active">🏠 Главная</a>
-                <a href="../index.html" class="nav-link">🧴 Каталог</a>
-                <a href="#" class="nav-link">📦 Упаковка</a>
-                <a href="#" class="nav-link">🧹 Инвентарь</a>
-                <a href="#" class="nav-link">📋 Расходники</a>
-                <a href="#" class="nav-link sale">🔥 Акции</a>
-                <a href="#" class="nav-link">ℹ️ О нас</a>
-                <a href="#" class="nav-link">📞 Контакты</a>
-            </div>
+            <a href="../pages/main.html" class="active">Главная</a>
+            <a href="../index.html">Каталог</a>
+            <a href="#">Акции</a>
+            <a href="#">О нас</a>
+            <a href="#">Контакты</a>
         </div>
     </nav>
 </header>
@@ -88,7 +87,6 @@
         </div>
         <button class="btn-checkout">Оформить заказ →</button>
     </div>
-</div>
 
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
