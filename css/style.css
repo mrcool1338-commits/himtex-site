@@ -695,24 +695,13 @@ nav a.active {
     opacity: 0.8;
 }
 
-.logo-img {
-    height: 120px;
-    width: auto;
-}
-
-.container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .view-btn.active,
 .view-btn:hover {
     background: var(--primary);
     color: white;
     border-color: var(--primary);
 }
-* ============================================
+/* ============================================
    RESET & VARIABLES
 ============================================ */
 *, *::before, *::after {
