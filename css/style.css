@@ -56,6 +56,33 @@ body {
     gap: 8px;
 }
 
+.header-top-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.header-top-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+
+.header-top-item img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.header-top-delivery {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
 /* ===========================
    HEADER MAIN
 =========================== */
@@ -163,6 +190,12 @@ header {
 .header-actions .icon {
     font-size: 22px;
     position: relative;
+}
+
+.header-actions .icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
 
 .cart-icon-wrap {
