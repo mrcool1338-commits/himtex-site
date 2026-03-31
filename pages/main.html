@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPack.kz — Упаковка и бытовая химия оптом</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== HEADER TOP ===== -->
+<div class="topbar">
+    <div class="container">
+        <div class="topbar-left">
+            <span>📞 +7 (727) 123-45-67</span>
+            <span>|</span>
+            <span>📧 info@upack.kz</span>
+            <span>|</span>
+            <span>📍 Алматы, ул. Примерная, 10</span>
+        </div>
+        <div class="topbar-right">
+            <span>🕐 Пн-Пт: 9:00 - 18:00</span>
+            <span>|</span>
+            <span>🚚 Бесплатная доставка от 15 000 тг</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+    <div class="container">
+        <div class="header-inner">
+            <a href="index.html" class="logo">U<em>Pack</em>.kz</a>
+            <div class="search-wrap">
+                <input type="text" id="searchInput" placeholder="Поиск товаров, брендов...">
+                <button onclick="handleSearch()">🔍 Найти</button>
+            </div>
+            <div class="h-actions">
+                <button class="h-action">
+                    <span class="ico">👤</span>
+                    <span>Войти</span>
+                </button>
+                <button class="h-action" onclick="toggleFav()">
+                    <span class="ico">❤️</span>
+                    <span>Избранное</span>
+                    <span class="h-badge" id="favBadge" style="display:none">0</span>
+                </button>
+                <button class="h-action" onclick="openCart()">
+                    <span class="ico">🛒</span>
+                    <span>Корзина</span>
+                    <span class="h-badge" id="cartBadge" style="display:none">0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="index.html" class="nav-link active">🏠 Главная</a>
+                <a href="catalog.html" class="nav-link">🧴 Бытовая химия</a>
+                <a href="#" class="nav-link">📦 Упаковка</a>
+                <a href="#" class="nav-link">🧹 Инвентарь</a>
+                <a href="#" class="nav-link">📋 Расходники</a>
+                <a href="#" class="nav-link sale">🔥 Акции</a>
+                <a href="#" class="nav-link">ℹ️ О нас</a>
+                <a href="#" class="nav-link">📞 Контакты</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-head">
+        <h3>🛒 Корзина</h3>
+        <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-body" id="cartBody">
+        <div class="cart-empty-msg">
+            <div class="big-ico">🛒</div>
+            <h4>Корзина пуста</h4>
+            <p>Добавьте товары из каталога</p>
+        </div>
+    </div>
+    <div class="cart-foot" id="cartFoot" style="display:none">
+        <div class="cart-total-row">
+            <span>Итого:</span>
+            <strong id="cartTotal">0 тг</strong>
+        </div>
+        <button class="btn-checkout">Оформить заказ →</button>
+    </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== HERO SLIDER ===== -->
+<section class="hero">
+
+    <!-- Slide 1 -->
+    <div class="slide active"
+         style="background:linear-gradient(135deg,#1a4a6e,#2c5f8a,#4a90c4)">
+        <div class="container">
+            <div class="slide-inner">
+                <div class="slide-text">
+                    <span class="slide-tag">🔥 Хит сезона</span>
+                    <h1>Профессиональные<br><span>Моющие средства</span></h1>
+                    <p>Лучшие бренды для дома, ресторанов и промышленности по всему Казахстану.</p>
+                    <div class="slide-btns">
+                        <a href="catalog.html" class="btn-s1">Смотреть каталог</a>
+                        <a href="#" class="btn-s2">Узнать цены</a>
+                    </div>
+                    <div class="slide-stats">
+                        <div class="stat-item">
+                            <strong>5000+</strong>
+                            <span>Товаров</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>3000+</strong>
+                            <span>Клиентов</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>10+</strong>
+                            <span>Лет работы</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-visual">
+                    <div class="slide-circle">🧴</div>
+                    <div class="float-badge fb1">✨ -20%</div>
+                    <div class="float-badge fb2">🚚 Доставка</div>
+                    <div class="float-badge fb3">⭐ 4.9</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide"
+         style="background:linear-gradient(135deg,#1a6e3a,#2c8a5f,#4ac490)">
+        <div class="container">
+            <div class="slide-inner">
+                <div class="slide-text">
+                    <span class="slide-tag">📦 Новинки</span>
+                    <h1>Упаковочные<br><span>Материалы</span></h1>
+                    <p>Широкий выбор упаковки для любого бизнеса. Пакеты, коробки, плёнка.</p>
+                    <div class="slide-btns">
+                        <a href="#" class="btn-s1">Смотреть упаковку</a>
+                        <a href="#" class="btn-s2">Оптовые цены</a>
+                    </div>
+                    <div class="slide-stats">
+                        <div class="stat-item">
+                            <strong>200+</strong>
+                            <span>Видов</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>24ч</strong>
+                            <span>Доставка</span>
+                        </div>
+                        <div class="stat-item">
+                            <strong>-30%</strong>
+                            <span>Скидки</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-visual">
+                    <div class="slide-circle">📦</div>
+                    <div class="float-badge fb1">📦 Опт</div>
+                    <div class="float-badge fb2">✅ Качество</div>
+                    <div class="float-badge fb3">💰 Выгодно</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide"
+         style="background:linear-gradient(135deg,#6e1a1a,#8a2c2c,#c44a4a)">
+        <div class="container">
+            <div class="slide-inner">
+                <div class="slide-text">
+                    <span class="slide-tag">🔥 Акция</span>
+                    <h1>Скидки до <span>40%</span><br>на весь каталог!</h1>
+                    <p>Только до конца месяца! Успейте купить по специальным ценам.</p>
+                    <div class="slide-btns">
+                        <a href="#" class="btn-s1">Смотреть акции</a>
+                        <a href="#" class="btn-s2">Все скидки</a>
+                    </div>
+                    <div class="countdown">
+                        <div class="cd-box">
+                            <strong id="cd-days">00</strong>
+                            <span>дней</span>
+                        </div>
+                        <span class="cd-sep">:</span>
+                        <div class="cd-box">
+                            <strong id="cd-hours">00</strong>
+                            <span>часов</span>
+                        </div>
+                        <span class="cd-sep">:</span>
+                        <div class="cd-box">
+                            <strong id="cd-mins">00</strong>
+                            <span>минут</span>
+                        </div>
+                        <span class="cd-sep">:</span>
+                        <div class="cd-box">
+                            <strong id="cd-secs">00</strong>
+                            <span>секунд</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-visual">
+                    <div class="slide-circle">🏷️</div>
+                    <div class="float-badge fb1">🔥 -40%</div>
+                    <div class="float-badge fb2">⏰ Торопись!</div>
+                    <div class="float-badge fb3">💥 Хит!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <button class="slide-prev" onclick="changeSlide(-1)">❮</button>
+    <button class="slide-next" onclick="changeSlide(1)">❯</button>
+    <div class="slider-dots" id="sliderDots"></div>
+</section>
+
+<!-- ===== FEATURES BAR ===== -->
+<div class="features-bar">
+    <div class="container">
+        <div class="features-row">
+            <div class="feat-item">
+                <span class="feat-ico">🚚</span>
+                <div class="feat-text">
+                    <strong>Быстрая доставка</strong>
+                    <span>По всему Казахстану</span>
+                </div>
+            </div>
+            <div class="feat-item">
+                <span class="feat-ico">💰</span>
+                <div class="feat-text">
+                    <strong>Лучшие цены</strong>
+                    <span>Гарантия низкой цены</span>
+                </div>
+            </div>
+            <div class="feat-item">
+                <span class="feat-ico">✅</span>
+                <div class="feat-text">
+                    <strong>Оригинальный товар</strong>
+                    <span>100% сертифицировано</span>
+                </div>
+            </div>
+            <div class="feat-item">
+                <span class="feat-ico">🔄</span>
+                <div class="feat-text">
+                    <strong>Лёгкий возврат</strong>
+                    <span>14 дней без вопросов</span>
+                </div>
+            </div>
+            <div class="feat-item">
+                <span class="feat-ico">📞</span>
+                <div class="feat-text">
+                    <strong>Поддержка 24/7</strong>
+                    <span>Всегда на связи</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head">
+            <div>
+                <h2>📂 Каталог товаров</h2>
+                <p>Широкий выбор продукции для дома и бизнеса</p>
+            </div>
+        </div>
+        <div class="cat-grid">
+            <a href="catalog.html" class="cat-card big"
+               style="--c1:#1a4a6e;--c2:#4a90c4">
+                <span class="cat-emoji">🧴</span>
+                <div class="cat-info">
+                    <h3>Моющие средства</h3>
+                    <p>124 товара</p>
+                </div>
+                <span class="cat-arr">→</span>
+            </a>
+            <a href="#" class="cat-card"
+               style="--c1:#1a6e3a;--c2:#4ac490">
+                <span class="cat-emoji">📦</span>
+                <div class="cat-info">
+                    <h3>Упаковка</h3>
+                    <p>200 товаров</p>
+                </div>
+                <span class="cat-arr">→</span>
+            </a>
+            <a href="#" class="cat-card"
+               style="--c1:#7a4a1a;--c2:#c49040">
+                <span class="cat-emoji">🧹</span>
+                <div class="cat-info">
+                    <h3>Инвентарь</h3>
+                    <p>85 товаров</p>
+                </div>
+                <span class="cat-arr">→</span>
+            </a>
+            <a href="#" class="cat-card"
+               style="--c1:#4a1a7a;--c2:#a04ac4">
+                <span class="cat-emoji">🧻</span>
+                <div class="cat-info">
+                    <h3>Расходники</h3>
+                    <p>150 товаров</p>
+                </div>
+                <span class="cat-arr">→</span>
+            </a>
+            <a href="#" class="cat-card"
+               style="--c1:#1a6e6e;--c2:#4ac4c4">
+                <span class="cat-emoji">🧼</span>
+                <div class="cat-info">
+                    <h3>Дезинфекция</h3>
+                    <p>60 товаров</p>
+                </div>
+                <span class="cat-arr">→</span>
+            </a>
+            <a href="#" class="cat-card"
+               style="--c1:#6e1a1a;--c2:#c44a4a">
+                <span class="cat-emoji">🪣</span>
+                <div class="cat-info">
+                    <h3>Ёмкости</h3>
+                    <p>45 товаров</p>
+                </div>
+                <span class="cat-arr">→</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== HOT DEALS ===== -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="sec-head">
+            <div>
+                <h2>🔥 Горячие предложения</h2>
+                <p>Самые популярные товары со скидками</p>
+            </div>
+            <a href="#" class="see-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid" id="hotDeals"></div>
+    </div>
+</section>
+
+<!-- ===== PROMO BANNERS ===== -->
+<section class="section">
+    <div class="container">
+        <div class="promo-grid">
+            <div class="promo-card"
+                 style="background:linear-gradient(135deg,#e85d04,#f39c12)">
+                <div class="promo-content">
+                    <span class="promo-tag">Только сегодня!</span>
+                    <h3>Оптовые скидки<br>до 30%</h3>
+                    <p>При заказе от 100 единиц</p>
+                    <button class="btn-promo">Подробнее</button>
+                </div>
+                <span class="promo-emoji">💥</span>
+            </div>
+            <div class="promo-card"
+                 style="background:linear-gradient(135deg,#2c5f8a,#4a90c4)">
+                <div class="promo-content">
+                    <span class="promo-tag">Новинки</span>
+                    <h3>Новые поступления</h3>
+                    <p>Свежие товары каждую неделю</p>
+                    <button class="btn-promo">Смотреть</button>
+                </div>
+                <span class="promo-emoji">🆕</span>
+            </div>
+            <div class="promo-card"
+                 style="background:linear-gradient(135deg,#2c8a5f,#4ac490)">
+                <div class="promo-content">
+                    <span class="promo-tag">Eco</span>
+                    <h3>Эко-продукция</h3>
+                    <p>Безопасно для природы</p>
+                    <button class="btn-promo">Выбрать</button>
+                </div>
+                <span class="promo-emoji">🌿</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== NEW PRODUCTS ===== -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="sec-head">
+            <div>
+                <h2>🆕 Новинки</h2>
+                <p>Только что поступили на склад</p>
+            </div>
+            <a href="#" class="see-all">Смотреть все →</a>
+        </div>
+        <div class="products-grid" id="newProducts"></div>
+    </div>
+</section>
+
+<!-- ===== BRANDS ===== -->
+<section class="section brands-section">
+    <div class="container">
+        <div class="sec-head">
+            <div>
+                <h2>🏷️ Наши бренды</h2>
+                <p>Работаем только с проверенными производителями</p>
+            </div>
+        </div>
+        <div class="brands-wrap">
+            <div class="brands-track" id="brandsTrack">
+                <div class="brand-item"><span>🧴</span><span>Fairy</span></div>
+                <div class="brand-item"><span>🧹</span><span>Mr. Proper</span></div>
+                <div class="brand-item"><span>🚽</span><span>Domestos</span></div>
+                <div class="brand-item"><span>💧</span><span>Sarma</span></div>
+                <div class="brand-item"><span>🫧</span><span>Prill</span></div>
+                <div class="brand-item"><span>🧽</span><span>AOS</span></div>
+                <div class="brand-item"><span>🌿</span><span>Ecover</span></div>
+                <div class="brand-item"><span>⚡</span><span>Flash</span></div>
+                <!-- duplicate for infinite scroll -->
+                <div class="brand-item"><span>🧴</span><span>Fairy</span></div>
+                <div class="brand-item"><span>🧹</span><span>Mr. Proper</span></div>
+                <div class="brand-item"><span>🚽</span><span>Domestos</span></div>
+                <div class="brand-item"><span>💧</span><span>Sarma</span></div>
+                <div class="brand-item"><span>🫧</span><span>Prill</span></div>
+                <div class="brand-item"><span>🧽</span><span>AOS</span></div>
+                <div class="brand-item"><span>🌿</span><span>Ecover</span></div>
+                <div class="brand-item"><span>⚡</span><span>Flash</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ADVANTAGES ===== -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="sec-head">
+            <div>
+                <h2>🌟 Почему выбирают нас</h2>
+                <p>Более 10 лет на рынке Казахстана</p>
+            </div>
+        </div>
+        <div class="adv-grid">
+            <div class="adv-card">
+                <div class="adv-icon">🏪</div>
+                <h4>Большой ассортимент</h4>
+                <p>Более 5000 наименований товаров всегда в наличии на складе в Алматы</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-icon">💵</div>
+                <h4>Честные цены</h4>
+                <p>Работаем напрямую с производителями — без лишних посредников</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-icon">🚛</div>
+                <h4>Доставка по КЗ</h4>
+                <p>Доставляем в любую точку Казахстана за 1-3 рабочих дня</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-icon">📋</div>
+                <h4>Для бизнеса</h4>
+                <p>Работаем с ТОО и ИП, предоставляем все необходимые документы</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-icon">🔒</div>
+                <h4>Гарантия качества</h4>
+                <p>Все товары сертифицированы и соответствуют стандартам ГОСТ</p>
+            </div>
+            <div class="adv-card">
+                <div class="adv-icon">🎁</div>
+                <h4>Программа лояльности</h4>
+                <p>Накапливайте бонусы и получайте скидки при каждой покупке</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head">
+            <div>
+                <h2>⭐ Отзывы клиентов</h2>
+                <p>Нам доверяют тысячи покупателей</p>
+            </div>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="rev-top">
+                    <div class="rev-avatar" style="background:#2c5f8a">АМ</div>
+                    <div class="rev-info">
+                        <strong>Айгерим М.</strong>
+                        <span>Алматы</span>
+                    </div>
+                    <div class="rev-stars">★★★★★</div>
+                </div>
+                <p>"Заказываю здесь уже 2 года. Отличное качество, быстрая доставка. Всегда есть нужный товар!"</p>
+                <span class="rev-date">15 ноября 2024</span>
+            </div>
+            <div class="review-card">
+                <div class="rev-top">
+                    <div class="rev-avatar" style="background:#e85d04">БК</div>
+                    <div class="rev-info">
+                        <strong>Бауыржан К.</strong>
+                        <span>Астана</span>
+                    </div>
+                    <div class="rev-stars">★★★★★</div>
+                </div>
+                <p>"Беру оптом для ресторана. Цены лучшие в городе, менеджеры помогают с выбором. Рекомендую!"</p>
+                <span class="rev-date">8 ноября 2024</span>
+            </div>
+            <div class="review-card">
+                <div class="rev-top">
+                    <div class="rev-avatar" style="background:#2c8a5f">ДС</div>
+                    <div class="rev-info">
+                        <strong>Дарья С.</strong>
+                        <span>Шымкент</span>
+                    </div>
+                    <div class="rev-stars">★★★★☆</div>
+                </div>
+                <p>"Хороший магазин! Упаковочные материалы всегда отличного качества. Доставка вовремя."</p>
+                <span class="rev-date">2 ноября 2024</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== NEWSLETTER ===== -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="newsletter-box">
+            <div class="nl-text">
+                <h3>📧 Подписывайтесь на рассылку</h3>
+                <p>Получайте первыми информацию об акциях и новинках</p>
+            </div>
+            <div class="nl-form">
+                <input type="email" id="emailInput" placeholder="Введите ваш email...">
+                <button onclick="subscribe()">Подписаться</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col footer-about">
+                <a href="index.html" class="footer-logo">U<em>Pack</em>.kz</a>
+                <p>Профессиональная упаковка и бытовая химия оптом и в розницу по всему Казахстану с 2014 года.</p>
+                <div class="socials">
+                    <a href="#" class="soc-btn">📘</a>
+                    <a href="#" class="soc-btn">📸</a>
+                    <a href="#" class="soc-btn">✈️</a>
+                    <a href="#" class="soc-btn">▶️</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Каталог</h4>
+                <ul>
+                    <li><a href="catalog.html">Моющие средства</a></li>
+                    <li><a href="#">Упаковочные материалы</a></li>
+                    <li><a href="#">Хозяйственный инвентарь</a></li>
+                    <li><a href="#">Расходные материалы</a></li>
+                    <li><a href="#">Дезинфицирующие</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Покупателям</h4>
+                <ul>
+                    <li><a href="#">Как сделать заказ</a></li>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Возврат товара</a></li>
+                    <li><a href="#">Акции и скидки</a></li>
+                    <li><a href="#">Программа лояльности</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <ul>
+                    <li><a href="tel:+77271234567">📞 +7 (727) 123-45-67</a></li>
+                    <li><a href="mailto:info@upack.kz">📧 info@upack.kz</a></li>
+                    <li><a href="#">📍 Алматы, ул. Примерная, 10</a></li>
+                    <li><a href="#">🕐 Пн-Пт: 9:00 - 18:00</a></li>
+                    <li><a href="#">🕐 Сб: 10:00 - 15:00</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 UPack.kz — Все права защищены</p>
+            <div class="pay-icons">
+                <span>💳 Visa</span>
+                <span>💳 Mastercard</span>
+                <span>📱 Kaspi Pay</span>
+                <span>🏦 Перевод</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="js/home.js"></script>
+</body>
+</html>
