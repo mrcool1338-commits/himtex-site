@@ -1,17 +1,3 @@
-/* ============================================
-   RESET & VARIABLES
-============================================ */
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --primary:       #2c5f8a;
-    --primary-dark:  #1a4a6e;
-    --primary-light: #4a90c4;
-    
 /* ===========================
    RESET & BASE
 =========================== */
@@ -726,3 +712,18 @@ nav a.active {
     color: white;
     border-color: var(--primary);
 }
+
+/* ============================================
+   RESET & VARIABLES
+============================================ */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary:       #2c5f8a;
+    --primary-dark:  #1a4a6e;
+    --primary-light: #4a90c4;
+    
