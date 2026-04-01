@@ -1404,8 +1404,8 @@ img { max-width: 100%; display: block; }
 }
 
 .slide-circle {
-    width: 230px;
-    height: 230px;
+    width: 280px;
+    height: 280px;
     border-radius: 50%;
     background: rgba(255,255,255,0.12);
     border: 3px solid rgba(255,255,255,0.25);
