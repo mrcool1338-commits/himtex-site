@@ -26,17 +26,9 @@ function renderDots(total) {
 function updateSlider() {
   const slides = getSlides();
   if (!slides.length) return;
-  const total = slides.length;
 
   slides.forEach((slide, index) => {
-    const forwardDistance = (index - currentSlide + total) % total;
-    const backwardDistance = (currentSlide - index + total) % total;
-    const isActive = index === currentSlide;
-    const isNext = !isActive && forwardDistance <= backwardDistance;
-
-    slide.classList.toggle('active', isActive);
-    slide.classList.toggle('next', !isActive && isNext);
-    slide.classList.toggle('prev', !isActive && !isNext);
+    slide.classList.toggle('active', index === currentSlide);
   });
 
   const dots = document.querySelectorAll('.sdot');
