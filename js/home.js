@@ -126,7 +126,8 @@ function handleSearch() {
     showToast('Введите запрос для поиска');
     return;
   }
-  window.location.href = `../index.html?search=${encodeURIComponent(value)}`;
+  const targetPath = window.location.pathname.includes('/pages/') ? '../index.html' : 'index.html';
+  window.location.href = `${targetPath}?search=${encodeURIComponent(value)}`;
 }
 
 function toggleFav() {
@@ -137,12 +138,12 @@ function openCart(event) {
   if (event) event.preventDefault();
 
   document.getElementById('cartDrawer')?.classList.add('active');
-  document.getElementById('overlay')?.classList.add('active');
+  (document.getElementById('overlay') || document.getElementById('cartOverlay'))?.classList.add('active');
 }
 
 function closeCart() {
   document.getElementById('cartDrawer')?.classList.remove('active');
-  document.getElementById('overlay')?.classList.remove('active');
+  (document.getElementById('overlay') || document.getElementById('cartOverlay'))?.classList.remove('active');
 }
 
 function subscribe() {
@@ -170,3 +171,15 @@ window.toggleFav = toggleFav;
 window.openCart = openCart;
 window.closeCart = closeCart;
 window.subscribe = subscribe;
+
+
+window.searchProducts = handleSearch;
+window.toggleCart = (event) => {
+  const drawer = document.getElementById('cartDrawer');
+  const isOpen = drawer?.classList.contains('active');
+  if (isOpen) {
+    closeCart();
+  } else {
+    openCart(event);
+  }
+};
