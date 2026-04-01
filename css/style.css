@@ -38,6 +38,13 @@ body {
     padding: 0 15px;
 }
 
+.container.sklad-bg {
+    background-image: url('../img/sklad.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 /* ===========================
    HEADER TOP
 =========================== */
