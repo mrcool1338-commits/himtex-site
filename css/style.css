@@ -39,10 +39,11 @@ body {
 }
 
 .container.sklad-bg {
-    background-image: url('../img/sklad.jpg');
+    background-image: linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)), url('../img/sklad.jpg');
     background-size: cover;
-    background-position: cover;
+    background-position: center;
     background-repeat: no-repeat;
+    border-radius: var(--radius);
 }
 
 /* ===========================
