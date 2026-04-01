@@ -36,9 +36,6 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
-    background: 
-        linear-gradient(rgba(44,95,138,0.85), rgba(44,95,138,0.85)),
-        url("../img/clean-bg.jpg") center/cover no-repeat;
 }
 
 /* ===========================
