@@ -1,6 +1,4 @@
 let currentSlide = 0;
-const slideIntervalMs = 6000;
-let slideTimer;
 
 function getSlides() {
   return Array.from(document.querySelectorAll('.hero .slide'));
@@ -50,26 +48,6 @@ function goToSlide(index) {
 
 function changeSlide(direction) {
   goToSlide(currentSlide + direction);
-  restartAutoplay();
-}
-
-function startAutoplay() {
-  stopAutoplay();
-  slideTimer = setInterval(() => {
-    goToSlide(currentSlide + 1);
-  }, slideIntervalMs);
-}
-
-function stopAutoplay() {
-  if (slideTimer) {
-    clearInterval(slideTimer);
-    slideTimer = null;
-  }
-}
-
-function restartAutoplay() {
-  stopAutoplay();
-  startAutoplay();
 }
 
 function setupSlider() {
@@ -78,15 +56,6 @@ function setupSlider() {
 
   renderDots(slides.length);
   updateSlider();
-  startAutoplay();
-
-  const hero = document.querySelector('.hero');
-  if (hero) {
-    hero.addEventListener('mouseenter', stopAutoplay);
-    hero.addEventListener('mouseleave', startAutoplay);
-    hero.addEventListener('touchstart', stopAutoplay, { passive: true });
-    hero.addEventListener('touchend', startAutoplay, { passive: true });
-  }
 }
 
 function updateCountdown() {
