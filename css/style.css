@@ -36,6 +36,10 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
+    background-image: url('../img/sklad.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* ===========================
