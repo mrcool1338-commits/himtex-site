@@ -531,12 +531,22 @@
     <div class="container">
         <div class="newsletter-box">
             <div class="nl-text">
-                <h3>📧 Подписывайтесь на рассылку</h3>
-                <p>Получайте первыми информацию об акциях и новинках</p>
+                <span class="nl-chip">💌 Спецпредложения каждую неделю</span>
+                <h3>Подписывайтесь на рассылку Himtex</h3>
+                <p>Получайте первыми информацию об акциях, новинках и персональных скидках для оптовых клиентов.</p>
+                <div class="nl-benefits">
+                    <span>⚡ Горячие скидки</span>
+                    <span>🎁 Подарки к заказам</span>
+                    <span>🚚 Условия доставки</span>
+                </div>
             </div>
             <div class="nl-form">
-                <input type="email" id="emailInput" placeholder="Введите ваш email...">
-                <button onclick="subscribe()">Подписаться</button>
+                <label for="emailInput" class="nl-label">Email для рассылки</label>
+                <div class="nl-input-row">
+                    <input type="email" id="emailInput" placeholder="Введите ваш email...">
+                    <button onclick="subscribe()">Подписаться</button>
+                </div>
+                <small>Нажимая «Подписаться», вы соглашаетесь получать рекламные и информационные письма.</small>
             </div>
         </div>
     </div>
