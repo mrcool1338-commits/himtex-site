@@ -42,10 +42,11 @@ body {
    HEADER TOP
 =========================== */
 .header-top {
-    background-color: var(--primary);
-    padding: 8px 0;
+    background: linear-gradient(90deg, #1d4a6c 0%, #2c5f8a 55%, #1f6d95 100%);
+    padding: 9px 0;
     color: white;
     font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
 .header-top .container {
@@ -70,6 +71,14 @@ body {
     text-decoration: none;
     color: white;
     font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 999px;
+    transition: background var(--transition), transform var(--transition);
+}
+
+.header-top-item:hover {
+    background: rgba(255,255,255,0.14);
+    transform: translateY(-1px);
 }
 
 .header-top-item img {
@@ -80,22 +89,27 @@ body {
 
 .header-top-delivery {
     white-space: nowrap;
-    font-weight: 600;
+    font-weight: 700;
+    background: rgba(255,255,255,0.15);
+    padding: 6px 12px;
+    border-radius: 999px;
 }
 
 /* ===========================
    HEADER MAIN
 =========================== */
 header {
-    background-color: var(--white);
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    background-color: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 12px 30px rgba(8,22,34,0.12);
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
 .header-main {
-    padding: 12px 0;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(44,95,138,0.12);
 }
 
 .header-main .container {
@@ -113,9 +127,28 @@ header {
 }
 
 .logo-img {
-    height: 70px;
+    height: 64px;
     width: auto;
     display: block;
+}
+
+.logo-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 185px;
+    color: #234b6e;
+}
+
+.logo-meta strong {
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.logo-meta span {
+    font-size: 12px;
+    color: #5b7489;
+    line-height: 1.25;
 }
 
 /* ===========================
@@ -131,7 +164,7 @@ header {
 .search-bar input {
     width: 100%;
     padding: 12px 20px;
-    border: 2px solid var(--primary);
+    border: 2px solid rgba(44,95,138,0.4);
     border-right: none;
     border-radius: 30px 0 0 30px;
     font-size: 14px;
@@ -141,6 +174,7 @@ header {
 
 .search-bar input:focus {
     border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(232,93,4,0.1);
 }
 
 .search-bar button {
@@ -151,12 +185,13 @@ header {
     border-radius: 0 30px 30px 0;
     cursor: pointer;
     font-size: 14px;
-    transition: background var(--transition);
+    transition: background var(--transition), transform var(--transition);
     white-space: nowrap;
 }
 
 .search-bar button:hover {
     background: var(--accent);
+    transform: translateY(-1px);
 }
 
 /* ===========================
@@ -177,14 +212,20 @@ header {
     flex-direction: column;
     align-items: center;
     font-size: 12px;
-    gap: 4px;
+    gap: 5px;
     transition: color var(--transition);
     position: relative;
     min-width: 55px;
+    padding: 6px 10px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
 }
 
 .header-actions a:hover {
     color: var(--primary);
+    border-color: rgba(44,95,138,0.2);
+    background: rgba(44,95,138,0.06);
 }
 
 .header-actions .icon {
@@ -256,7 +297,7 @@ header {
    NAVIGATION
 =========================== */
 nav {
-    background-color: var(--primary);
+    background: linear-gradient(90deg, #234f74 0%, #2c5f8a 100%);
     overflow-x: auto;
 }
 
