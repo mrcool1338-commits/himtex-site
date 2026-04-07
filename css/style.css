@@ -1346,25 +1346,84 @@ img { max-width: 100%; display: block; }
 ============================================ */
 .toast {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #2d2d2d;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(135deg, #0f2130 0%, #102f45 100%);
     color: #fff;
-    padding: 14px 22px;
-    border-radius: var(--radius);
+    padding: 14px 18px 16px 46px;
+    border-radius: 14px;
     font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
     z-index: 9999;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px) scale(0.97);
     pointer-events: none;
-    transition: all var(--tr);
-    max-width: 320px;
-    box-shadow: var(--shadow-lg);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+    max-width: min(90vw, 360px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 16px 36px rgba(7, 17, 28, 0.45);
+    backdrop-filter: blur(8px);
+}
+
+.toast::before {
+    content: "✓";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-58%);
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #29d893 0%, #0fb670 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 14px rgba(15, 182, 112, 0.45);
+}
+
+.toast::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 6px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4ce6a9 0%, #13b16f 100%);
+    transform-origin: left center;
+    transform: scaleX(0);
 }
 
 .toast.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    animation: toastPop 0.3s ease;
+}
+
+.toast.show::after {
+    animation: toastTimer 2.2s linear forwards;
+}
+
+@keyframes toastPop {
+    0% { transform: translateY(16px) scale(0.95); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes toastTimer {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+@media (max-width: 600px) {
+    .toast {
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+        max-width: none;
+    }
 }
 
 /* ============================================
