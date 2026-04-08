@@ -600,18 +600,38 @@ nav a.active {
    BREADCRUMB
 =========================== */
 .breadcrumb {
-    padding: 15px 0;
+    margin: 18px 0 16px;
+    padding: 12px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 13px;
-    color: var(--text-light);
+    color: #5f7890;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef5fc 100%);
+    border: 1px solid #dbe8f4;
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(13, 45, 74, 0.07);
 }
 
 .breadcrumb a {
     color: var(--primary);
     text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition), transform var(--transition);
 }
 
-.breadcrumb a:hover { text-decoration: underline; }
-.breadcrumb span { margin: 0 8px; }
+.breadcrumb a:hover {
+    color: #0f4f80;
+    transform: translateY(-1px);
+}
+
+.breadcrumb span { color: #9ab1c5; }
+
+.breadcrumb-current {
+    color: #3e5f7c !important;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
 
 /* ===========================
    PAGE HEADER
