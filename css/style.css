@@ -661,6 +661,7 @@ nav a.active {
         radial-gradient(circle at 88% 18%, rgba(255, 255, 255, 0.16), transparent 45%),
         radial-gradient(circle at 12% 84%, rgba(84, 177, 255, 0.22), transparent 40%),
         linear-gradient(rgba(8, 22, 34, 0.76), rgba(8, 22, 34, 0.7)),
+        url("../img/sklad.jpg") center/cover no-repeat;
     transform: scale(1.03);
 }
 
