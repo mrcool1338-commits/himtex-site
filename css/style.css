@@ -561,6 +561,15 @@ nav a.active {
 
 .cart-item-remove:hover { color: #e74c3c; }
 
+
+.cart-item-actions {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
 .cart-footer {
     padding: 20px;
     border-top: 1px solid rgba(10, 41, 67, 0.14);
@@ -3219,6 +3228,13 @@ img { max-width: 100%; display: block; }
 }
 
 .prod-card:hover .prod-img { transform: scale(1.04); }
+
+
+.prod-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 .prod-body {
     padding: 14px;
