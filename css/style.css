@@ -2765,21 +2765,24 @@ img { max-width: 100%; display: block; }
 .cat-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 18px;
 }
 
 .cat-card {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 24px 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 20px 18px;
     border-radius: var(--radius);
     background: linear-gradient(135deg, var(--c1), var(--c2));
     color: #fff;
     cursor: pointer;
-    transition: transform var(--tr), box-shadow var(--tr);
+    transition: transform var(--tr), box-shadow var(--tr), filter var(--tr);
     position: relative;
     overflow: hidden;
+    min-height: 150px;
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .cat-card::before {
@@ -2789,27 +2792,60 @@ img { max-width: 100%; display: block; }
     height: 130px;
     border-radius: 50%;
     background: rgba(255,255,255,0.07);
-    right: -30px;
-    bottom: -30px;
+    right: -40px;
+    bottom: -40px;
+    pointer-events: none;
+}
+
+.cat-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(140deg, rgba(255,255,255,0.12), transparent 50%);
+    opacity: 0.85;
     pointer-events: none;
 }
 
 .cat-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
+    filter: saturate(1.05);
 }
 
 .cat-card.big {
     grid-column: span 3;
-    padding: 34px 30px;
+    min-height: 220px;
+    padding: 24px 24px;
 }
 
-.cat-card.big .cat-emoji { font-size: 60px; }
+.cat-card.big .cat-emoji { font-size: 52px; }
 .cat-card.big .cat-info h3 { font-size: 22px; }
+
+.cat-card-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
 
 .cat-emoji {
     font-size: 38px;
     flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(4px);
+}
+
+.cat-emoji img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
 }
 
 .cat-info { flex: 1; }
@@ -2825,6 +2861,39 @@ img { max-width: 100%; display: block; }
     opacity: 0.82;
 }
 
+.cat-tag {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.34);
+    padding: 6px 10px;
+    border-radius: 999px;
+    position: relative;
+    z-index: 1;
+}
+
+.cat-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.95);
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+}
+
+.cat-meta strong {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.cat-meta span {
+    opacity: 0.86;
+}
+
 .cat-arr {
     font-size: 22px;
     opacity: 0.7;
@@ -2833,6 +2902,38 @@ img { max-width: 100%; display: block; }
 }
 
 .cat-card:hover .cat-arr { transform: translateX(6px); }
+
+@media (max-width: 1024px) {
+    .cat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cat-card.big {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .cat-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .cat-card,
+    .cat-card.big {
+        grid-column: span 1;
+        min-height: 136px;
+        padding: 18px 16px;
+    }
+
+    .cat-card.big .cat-info h3 {
+        font-size: 18px;
+    }
+
+    .cat-info p {
+        font-size: 12px;
+    }
+}
 
 /* ============================================
    PRODUCT CARDS
