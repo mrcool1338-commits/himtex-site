@@ -100,6 +100,34 @@ const state = {
   currentCategory: 'all',
 };
 
+function getSelectedBrands() {
+  return Array.from(document.querySelectorAll('#brandFilters input[data-brand]:checked'))
+    .map((input) => input.dataset.brand);
+}
+
+function getSelectedVolumes() {
+  return Array.from(document.querySelectorAll('.filter-block input[data-vol]:checked'))
+    .map((input) => input.dataset.vol);
+}
+
+function filterProducts() {
+  const min = Number(document.getElementById('priceMin')?.value || 0);
+  const max = Number(document.getElementById('priceMax')?.value || Number.MAX_SAFE_INTEGER);
+  const brands = getSelectedBrands();
+  const volumes = getSelectedVolumes();
+
+  state.filteredProducts = products.filter((product) => {
+    const inCategory = state.currentCategory === 'all' || product.categoryKey === state.currentCategory;
+    const inPrice = product.price >= min && product.price <= max;
+    const inBrand = !brands.length || brands.includes(product.brand);
+    const inVolume = !volumes.length || volumes.includes(product.volumeKey);
+
+    return inCategory && inPrice && inBrand && inVolume;
+  });
+
+  renderProducts(state.filteredProducts);
+}
+
 function getSlides() {
   return Array.from(document.querySelectorAll('.hero .slide'));
 }
@@ -391,16 +419,13 @@ function syncSearchFromQuery() {
 }
 
 function applyFilters() {
-  const min = Number(document.getElementById('priceMin')?.value || 0);
-  const max = Number(document.getElementById('priceMax')?.value || Number.MAX_SAFE_INTEGER);
-
-  state.filteredProducts = products.filter((product) => product.price >= min && product.price <= max);
-  renderProducts(state.filteredProducts);
+  filterProducts();
 }
 
 function resetFilters() {
   state.filteredProducts = [...products];
-
+  state.currentCategory = 'all';
+  
   const min = document.getElementById('priceMin');
   const max = document.getElementById('priceMax');
   if (min) min.value = '';
@@ -409,6 +434,11 @@ function resetFilters() {
   document.querySelectorAll('#categoriesList a').forEach((el) => el.classList.remove('active'));
   const allCategory = document.querySelector('#categoriesList a[data-cat="all"]');
   if (allCategory) allCategory.classList.add('active');
+
+  document.querySelectorAll('#brandFilters input[data-brand], .filter-block input[data-vol]')
+    .forEach((input) => {
+      input.checked = false;
+    });
 
   renderProducts(state.filteredProducts);
 }
@@ -435,9 +465,34 @@ function setupCategories() {
       link.classList.add('active');
       state.currentCategory = cat;
 
-      state.filteredProducts = products.filter((product) => cat === 'all' || product.categoryKey === cat);
-      renderProducts(state.filteredProducts);
+      filterProducts();
     });
+  });
+}
+
+function setupBrandFilters() {
+  const container = document.getElementById('brandFilters');
+  if (!container) return;
+
+  const brands = [...new Set(products.map((product) => product.brand))].sort((a, b) => a.localeCompare(b));
+
+  container.innerHTML = brands.map((brand, index) => {
+    const inputId = `brand-${index + 1}`;
+    return `
+      <div class="filter-item">
+        <input type="checkbox" id="${inputId}" data-brand="${brand}">
+        <label for="${inputId}">${brand}</label>
+      </div>`;
+  }).join('');
+
+  container.querySelectorAll('input[data-brand]').forEach((input) => {
+    input.addEventListener('change', filterProducts);
+  });
+}
+
+function setupVolumeFilters() {
+  document.querySelectorAll('.filter-block input[data-vol]').forEach((input) => {
+    input.addEventListener('change', filterProducts);
   });
 }
 
@@ -518,6 +573,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderProducts();
   setupCategories();
+  setupBrandFilters();
+  setupVolumeFilters();
   updateFavoriteBadge();
   updateCartBadge();
   renderCart();
