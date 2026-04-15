@@ -2607,13 +2607,6 @@ img { max-width: 100%; display: block; }
     color: var(--text-muted);
 }
 
-.rev-stars {
-    font-size: 13px;
-    letter-spacing: 1px;
-    color: #f6b01b;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.08);
-}
-
 .review-card p {
     font-size: 14px;
     line-height: 1.5;
@@ -3275,13 +3268,6 @@ img { max-width: 100%; display: block; }
     color: var(--primary);
     font-weight: 600;
     margin-bottom: 8px;
-}
-
-.prod-stars {
-    color: var(--yellow);
-    font-size: 12px;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
 }
 
 .prod-price-row {
