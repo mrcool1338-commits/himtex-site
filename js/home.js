@@ -11,7 +11,6 @@ const products = [
     volumeKey: 'large',
     price: 3600,
     oldPrice: 4200,
-    rating: 4.8,
     isNew: true,
     badge: 'new',
     image: 'img/agel.png',
@@ -26,7 +25,6 @@ const products = [
     volumeKey: 'large',
     price: 5200,
     oldPrice: 5900,
-    rating: 4.9,
     isNew: false,
     badge: 'hit',
     image: 'img/poroshok.png',
@@ -41,7 +39,6 @@ const products = [
     volumeKey: 'medium',
     price: 2900,
     oldPrice: 0,
-    rating: 4.6,
     isNew: true,
     badge: 'new',
     image: 'img/Sanraizu.png',
@@ -56,7 +53,6 @@ const products = [
     volumeKey: 'small',
     price: 1200,
     oldPrice: 1450,
-    rating: 4.7,
     isNew: false,
     badge: 'sale',
     image: 'img/san.jpg',
@@ -71,7 +67,6 @@ const products = [
     volumeKey: 'xlarge',
     price: 7800,
     oldPrice: 8600,
-    rating: 4.9,
     isNew: false,
     badge: 'hit',
     image: 'img/acfon.jpg',
@@ -86,7 +81,6 @@ const products = [
     volumeKey: 'medium',
     price: 2150,
     oldPrice: 0,
-    rating: 4.5,
     isNew: true,
     badge: 'new',
     image: 'img/detergent.png',
@@ -250,8 +244,6 @@ function renderProducts(list = state.filteredProducts) {
     }[product.badge] || 'new';
 
     const showBadge = product.badge !== 'sale';
-    
-    const stars = '★'.repeat(Math.round(product.rating));
 
     card.innerHTML = `
       ${showBadge ? `<span class="prod-badge ${badgeClass}">${badgeLabel}</span>` : ''}
@@ -264,7 +256,6 @@ function renderProducts(list = state.filteredProducts) {
         <h3 class="prod-name">${product.name}</h3>
         <div class="prod-vol">Объём: ${product.volumeLabel}</div>
         <div class="prod-box-note">Продажа коробками</div>
-        <div class="prod-stars" title="Рейтинг ${product.rating}">${stars}</div>
         <div class="prod-price-row">
           <div class="prod-price">${formatPrice(product.price)}</div>
         </div>
@@ -579,7 +570,6 @@ function sortProducts() {
 
   if (value === 'price-asc') sorted.sort((a, b) => a.price - b.price);
   if (value === 'price-desc') sorted.sort((a, b) => b.price - a.price);
-  if (value === 'rating') sorted.sort((a, b) => b.rating - a.rating);
   if (value === 'newest') sorted.sort((a, b) => Number(b.isNew) - Number(a.isNew));
 
   state.filteredProducts = sorted;
