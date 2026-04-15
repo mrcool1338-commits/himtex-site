@@ -3267,6 +3267,13 @@ img { max-width: 100%; display: block; }
 .prod-vol {
     font-size: 12px;
     color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.prod-box-note {
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 600;
     margin-bottom: 8px;
 }
 
@@ -3280,7 +3287,7 @@ img { max-width: 100%; display: block; }
 .prod-price-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-bottom: 12px;
 }
 
@@ -3311,6 +3318,52 @@ img { max-width: 100%; display: block; }
 }
 
 .btn-cart:hover { background: var(--accent); }
+
+.prod-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.qty-control {
+    display: grid;
+    grid-template-columns: 34px 1fr 34px;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.qty-btn {
+    border: none;
+    background: #f3f6fa;
+    color: var(--text);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    min-height: 34px;
+}
+
+.qty-input {
+    border: none;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    min-height: 34px;
+    outline: none;
+    width: 100%;
+}
+
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.qty-input[type=number] {
+    -moz-appearance: textfield;
+}
 
 /* ============================================
    PROMO BANNERS
