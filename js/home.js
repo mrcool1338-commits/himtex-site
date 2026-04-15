@@ -249,10 +249,12 @@ function renderProducts(list = state.filteredProducts) {
       hit: 'hit',
     }[product.badge] || 'new';
 
+    const showBadge = product.badge !== 'sale';
+    
     const stars = '★'.repeat(Math.round(product.rating));
 
     card.innerHTML = `
-      <span class="prod-badge ${badgeClass}">${badgeLabel}</span>
+      ${showBadge ? `<span class="prod-badge ${badgeClass}">${badgeLabel}</span>` : ''}
       <button class="prod-fav${isLiked ? ' liked' : ''}" type="button" aria-label="Добавить в избранное" data-id="${product.id}">❤</button>
       <div class="prod-img">
         <img src="${getAssetPath(product.image)}" alt="${product.name}" loading="lazy" decoding="async">
@@ -261,12 +263,19 @@ function renderProducts(list = state.filteredProducts) {
         <div class="prod-cat">${product.category}</div>
         <h3 class="prod-name">${product.name}</h3>
         <div class="prod-vol">Объём: ${product.volumeLabel}</div>
+        <div class="prod-box-note">Продажа коробками</div>
         <div class="prod-stars" title="Рейтинг ${product.rating}">${stars}</div>
         <div class="prod-price-row">
           <div class="prod-price">${formatPrice(product.price)}</div>
-          ${product.oldPrice ? `<div class="prod-old">${formatPrice(product.oldPrice)}</div>` : ''}
         </div>
-        <button class="btn-cart" type="button" data-cart-id="${product.id}">В корзину</button>
+        <div class="prod-actions">
+          <div class="qty-control" data-qty-control="${product.id}">
+            <button type="button" class="qty-btn" data-qty-dec="${product.id}" aria-label="Уменьшить количество">−</button>
+            <input class="qty-input" type="number" min="1" value="1" data-qty-input="${product.id}" aria-label="Количество коробок">
+            <button type="button" class="qty-btn" data-qty-inc="${product.id}" aria-label="Увеличить количество">+</button>
+          </div>
+          <button class="btn-cart" type="button" data-cart-id="${product.id}">В корзину</button>
+        </div>
       </div>`;
 
     productsGrid.appendChild(card);
@@ -277,7 +286,40 @@ function renderProducts(list = state.filteredProducts) {
   });
 
   document.querySelectorAll('[data-cart-id]').forEach((btn) => {
-    btn.addEventListener('click', () => addToCart(Number(btn.dataset.cartId)));
+    btn.addEventListener('click', () => {
+      const productId = Number(btn.dataset.cartId);
+      const qtyInput = document.querySelector(`[data-qty-input="${productId}"]`);
+      const qty = Math.max(1, Number(qtyInput?.value || 1));
+      if (qtyInput) qtyInput.value = String(qty);
+      addToCart(productId, qty);
+    });
+  });
+
+  document.querySelectorAll('[data-qty-dec]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const productId = Number(btn.dataset.qtyDec);
+      const qtyInput = document.querySelector(`[data-qty-input="${productId}"]`);
+      if (!qtyInput) return;
+      const current = Math.max(1, Number(qtyInput.value || 1));
+      qtyInput.value = String(Math.max(1, current - 1));
+    });
+  });
+
+  document.querySelectorAll('[data-qty-inc]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const productId = Number(btn.dataset.qtyInc);
+      const qtyInput = document.querySelector(`[data-qty-input="${productId}"]`);
+      if (!qtyInput) return;
+      const current = Math.max(1, Number(qtyInput.value || 1));
+      qtyInput.value = String(current + 1);
+    });
+  });
+
+  document.querySelectorAll('[data-qty-input]').forEach((input) => {
+    input.addEventListener('input', () => {
+      const normalized = Math.max(1, Number(input.value || 1));
+      if (normalized !== Number(input.value)) input.value = String(normalized);
+    });
   });
 
   const results = document.getElementById('resultsCount');
@@ -318,12 +360,12 @@ function updateCartBadge() {
   cartBadge.style.display = totalItems ? 'flex' : 'none';
 }
 
-function addToCart(productId) {
+function addToCart(productId, qty = 1) {
   const current = state.cart.get(productId) || 0;
-  state.cart.set(productId, current + 1);
+  state.cart.set(productId, current + qty);
   updateCartBadge();
   renderCart();
-  showToast('Товар добавлен в корзину');
+  showToast(`Добавлено в корзину: ${qty} кор.`);
 }
 
 function removeFromCart(productId) {
@@ -364,7 +406,7 @@ function renderCart() {
         <img src="${getAssetPath(product.image)}" alt="${product.name}" class="cart-item-img">
         <div class="cart-item-info">
           <div class="cart-item-name">${product.name}</div>
-          <div class="cart-item-price">${qty} × ${formatPrice(product.price)}</div>
+          <div class="cart-item-price">${qty} кор. × ${formatPrice(product.price)}</div>
         </div>
         <div class="cart-item-actions">
           <strong>${formatPrice(product.price * qty)}</strong>
