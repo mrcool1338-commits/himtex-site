@@ -3152,21 +3152,21 @@ img { max-width: 100%; display: block; }
 }
 
 .prod-card {
-    background: #f8f9fb;
-    border-radius: 22px;
+    background: var(--white);
+    border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: none;
-    transition: transform var(--tr), box-shadow var(--tr), border-color var(--tr);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--tr), box-shadow var(--tr);
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid #c9d5e2;
+    border: 1px solid transparent;
 }
 
 .prod-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-md);
-    border-color: #8fb4d9;
+    border-color: var(--border);
 }
 
 .prod-badge {
@@ -3186,129 +3186,159 @@ img { max-width: 100%; display: block; }
 .badge-new  { background: var(--green);  color: #fff; }
 .badge-hit  { background: var(--yellow); color: #fff; }
 
-.prod-sku {
-    color: #0790e0;
-    font-weight: 700;
+.prod-fav {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
     font-size: 16px;
-    line-height: 1;
-    padding: 16px 18px 10px;
-    letter-spacing: 0.2px;
-}
-
-.prod-img {
-    height: 170px;
-    background: transparent;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 68px;
-    overflow: hidden;
-    transition: transform var(--tr), opacity var(--tr);
-    padding: 8px 20px 12px;
+    box-shadow: var(--shadow-sm);
+    z-index: 1;
+    transition: all var(--tr);
 }
 
-.prod-card:hover .prod-img { transform: scale(1.03); }
+.prod-fav:hover { background: #ffe0e0; transform: scale(1.1); }
+.prod-fav.liked { background: #ffe0e0; }
+
+.prod-img {
+    height: 190px;
+    background: linear-gradient(135deg, #e8f0f7, #d0e3f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 75px;
+    overflow: hidden;
+    transition: transform var(--tr);
+}
+
+.prod-card:hover .prod-img { transform: scale(1.04); }
 
 
 .prod-img img {
-    width: 70%;
+    width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .prod-body {
-    padding: 0 20px 14px;
+    padding: 14px;
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.prod-price {
-    font-size: 36px;
-    font-weight: 700;
-    color: #2e4976;
-    line-height: 1.15;
-    margin-bottom: 4px;
-}
-
-.prod-unit-price {
-    font-size: 26px;
-    color: #6b7786;
-    font-weight: 500;
-}
-
-.prod-title-wrap {
-    background: #d9e4f2;
-    padding: 16px 20px;
-    min-height: 70px;
-    display: flex;
-    align-items: center;
+.prod-cat {
+    font-size: 11px;
+    color: var(--primary);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
 }
 
 .prod-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+
+.prod-vol {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.prod-box-note {
+    font-size: 12px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.prod-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+}
+
+.prod-price {
     font-size: 20px;
-    font-weight: 700;
-    color: #2e4976;
-    line-height: 1.35;
-    margin: 0;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.prod-old {
+    font-size: 13px;
+    color: #bbb;
+    text-decoration: line-through;
 }
 
 .btn-cart {
     width: 100%;
-    padding: 10px 16px;
-    background: #1198dc;
+    padding: 10px;
+    background: var(--primary);
     color: #fff;
     border: none;
-    border-radius: 999px;
-    font-size: 22px;
-    font-weight: 700;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
     font-family: inherit;
     transition: background var(--tr);
-    min-height: 48px;
 }
 
-.btn-cart:hover { background: #0b83c1; }
+.btn-cart:hover { background: var(--accent); }
 
 .prod-actions {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    padding: 14px 12px 10px;
+    grid-template-columns: 1fr;
+    gap: 8px;
 }
 
 .qty-control {
     display: grid;
     grid-template-columns: 34px 1fr 34px;
     align-items: center;
-    background: #ebeff4;
-    border-radius: 0;
-    min-height: 58px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
 }
 
 .qty-btn {
     border: none;
-    background: transparent;
-    color: #1198dc;
-    font-size: 30px;
+    background: #f3f6fa;
+    color: var(--text);
+    font-size: 18px;
     line-height: 1;
     cursor: pointer;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    justify-self: center;
-    box-shadow: 0 7px 16px rgba(0, 0, 0, 0.12);
+    min-height: 34px;
 }
 
 .qty-input {
     border: none;
     text-align: center;
-    font-size: 32px;
-    font-weight: 700;
-    color: #111;
-    min-height: 42px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    min-height: 34px;
     outline: none;
     width: 100%;
-    background: transparent;
 }
 
 .qty-input::-webkit-outer-spin-button,
@@ -3320,29 +3350,6 @@ img { max-width: 100%; display: block; }
 .qty-input[type=number] {
     -moz-appearance: textfield;
 }
-
-.prod-actions-bottom {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    align-items: center;
-}
-
-.prod-fav {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: #2a88ce;
-    font-size: 30px;
-    line-height: 1;
-    cursor: pointer;
-    transition: transform var(--tr), color var(--tr);
-}
-
-.prod-fav:hover { transform: scale(1.1); }
-.prod-fav.liked { color: #f4a100; }
 
 /* ============================================
    PROMO BANNERS
