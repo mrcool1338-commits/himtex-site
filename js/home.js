@@ -3,20 +3,22 @@ let currentSlide = 0;
 const products = [
   {
     id: 1,
-    name: 'Гель для стирки Active Color',
-    category: 'Гели',
+    sku: '0405-0040',
+    name: 'Мыло хозяйственное 72% 150 гр Хозяйка упакованное',
+    category: 'Мыла',
     categoryKey: 'floor',
-    brand: 'ACTIVE',
-    volumeLabel: '2 л',
-    volumeKey: 'large',
-    price: 3600,
-    oldPrice: 4200,
+    brand: 'ХОЗЯЙКА',
+    volumeLabel: '150 г',
+    volumeKey: 'small',
+    price: 13440,
+    unitPrice: 224,
     isNew: true,
     badge: 'new',
-    image: 'img/agel.png',
+    image: 'img/san.jpg',
   },
   {
     id: 2,
+    sku: '0501-1012',
     name: 'Стиральный порошок Sanraizu Universal',
     category: 'Стиральные порошки',
     categoryKey: 'glass',
@@ -24,13 +26,14 @@ const products = [
     volumeLabel: '3 кг',
     volumeKey: 'large',
     price: 5200,
-    oldPrice: 5900,
+    unitPrice: 1734,
     isNew: false,
     badge: 'hit',
     image: 'img/poroshok.png',
   },
   {
     id: 3,
+    sku: '0203-9001',
     name: 'Шампунь для ковров Profi Clean',
     category: 'Шампуни',
     categoryKey: 'dishes',
@@ -38,13 +41,14 @@ const products = [
     volumeLabel: '1 л',
     volumeKey: 'medium',
     price: 2900,
-    oldPrice: 0,
+    unitPrice: 2900,
     isNew: true,
     badge: 'new',
     image: 'img/Sanraizu.png',
   },
   {
     id: 4,
+    sku: '0408-0010',
     name: 'Антибактериальное мыло Fresh Care',
     category: 'Мыла',
     categoryKey: 'disinfect',
@@ -52,13 +56,14 @@ const products = [
     volumeLabel: '500 мл',
     volumeKey: 'small',
     price: 1200,
-    oldPrice: 1450,
+    unitPrice: 1200,
     isNew: false,
     badge: 'sale',
     image: 'img/san.jpg',
   },
   {
     id: 5,
+    sku: '0701-4002',
     name: 'Детские подгузники Soft Baby XL',
     category: 'Подгузники',
     categoryKey: 'universal',
@@ -66,13 +71,14 @@ const products = [
     volumeLabel: '52 шт',
     volumeKey: 'xlarge',
     price: 7800,
-    oldPrice: 8600,
+    unitPrice: 150,
     isNew: false,
     badge: 'hit',
     image: 'img/acfon.jpg',
   },
   {
     id: 6,
+    sku: '0901-5004',
     name: 'Универсальный очиститель кухонных поверхностей',
     category: 'Другое',
     categoryKey: 'plumbing',
@@ -80,7 +86,7 @@ const products = [
     volumeLabel: '750 мл',
     volumeKey: 'medium',
     price: 2150,
-    oldPrice: 0,
+    unitPrice: 2150,
     isNew: true,
     badge: 'new',
     image: 'img/detergent.png',
@@ -221,6 +227,14 @@ function formatPrice(value) {
   return `${new Intl.NumberFormat('ru-RU').format(value)} тг`;
 }
 
+function formatCardPrice(value) {
+  return `${value.toFixed(2)} ₸/кор`;
+}
+
+function formatUnitPrice(value) {
+  return `${value.toFixed(2)} ₸/шт`;
+}
+
 function renderProducts(list = state.filteredProducts) {
   const productsGrid = document.getElementById('productsGrid');
   if (!productsGrid) return;
@@ -247,25 +261,26 @@ function renderProducts(list = state.filteredProducts) {
 
     card.innerHTML = `
       ${showBadge ? `<span class="prod-badge ${badgeClass}">${badgeLabel}</span>` : ''}
-      <button class="prod-fav${isLiked ? ' liked' : ''}" type="button" aria-label="Добавить в избранное" data-id="${product.id}">❤</button>
+      <div class="prod-sku">Арт. ${product.sku || `00${product.id}`}</div>
       <div class="prod-img">
         <img src="${getAssetPath(product.image)}" alt="${product.name}" loading="lazy" decoding="async">
       </div>
       <div class="prod-body">
-        <div class="prod-cat">${product.category}</div>
+        <div class="prod-price">${formatCardPrice(product.price)}</div>
+        <div class="prod-unit-price">${formatUnitPrice(product.unitPrice || product.price)}</div>
+      </div>
+      <div class="prod-title-wrap">
         <h3 class="prod-name">${product.name}</h3>
-        <div class="prod-vol">Объём: ${product.volumeLabel}</div>
-        <div class="prod-box-note">Продажа коробками</div>
-        <div class="prod-price-row">
-          <div class="prod-price">${formatPrice(product.price)}</div>
+      </div>
+      <div class="prod-actions">
+        <div class="qty-control" data-qty-control="${product.id}">
+          <button type="button" class="qty-btn" data-qty-dec="${product.id}" aria-label="Уменьшить количество">−</button>
+          <input class="qty-input" type="number" min="1" value="0" data-qty-input="${product.id}" aria-label="Количество коробок">
+          <button type="button" class="qty-btn" data-qty-inc="${product.id}" aria-label="Увеличить количество">+</button>
         </div>
-        <div class="prod-actions">
-          <div class="qty-control" data-qty-control="${product.id}">
-            <button type="button" class="qty-btn" data-qty-dec="${product.id}" aria-label="Уменьшить количество">−</button>
-            <input class="qty-input" type="number" min="1" value="1" data-qty-input="${product.id}" aria-label="Количество коробок">
-            <button type="button" class="qty-btn" data-qty-inc="${product.id}" aria-label="Увеличить количество">+</button>
-          </div>
+        <div class="prod-actions-bottom">
           <button class="btn-cart" type="button" data-cart-id="${product.id}">В корзину</button>
+          <button class="prod-fav${isLiked ? ' liked' : ''}" type="button" aria-label="Добавить в избранное" data-id="${product.id}">☆</button>
         </div>
       </div>`;
 
@@ -280,7 +295,7 @@ function renderProducts(list = state.filteredProducts) {
     btn.addEventListener('click', () => {
       const productId = Number(btn.dataset.cartId);
       const qtyInput = document.querySelector(`[data-qty-input="${productId}"]`);
-      const qty = Math.max(1, Number(qtyInput?.value || 1));
+      const qty = Math.max(1, Number(qtyInput?.value || 0));
       if (qtyInput) qtyInput.value = String(qty);
       addToCart(productId, qty);
     });
@@ -291,8 +306,8 @@ function renderProducts(list = state.filteredProducts) {
       const productId = Number(btn.dataset.qtyDec);
       const qtyInput = document.querySelector(`[data-qty-input="${productId}"]`);
       if (!qtyInput) return;
-      const current = Math.max(1, Number(qtyInput.value || 1));
-      qtyInput.value = String(Math.max(1, current - 1));
+      const current = Math.max(0, Number(qtyInput.value || 0));
+      qtyInput.value = String(Math.max(0, current - 1));
     });
   });
 
@@ -301,14 +316,14 @@ function renderProducts(list = state.filteredProducts) {
       const productId = Number(btn.dataset.qtyInc);
       const qtyInput = document.querySelector(`[data-qty-input="${productId}"]`);
       if (!qtyInput) return;
-      const current = Math.max(1, Number(qtyInput.value || 1));
+      const current = Math.max(0, Number(qtyInput.value || 0));
       qtyInput.value = String(current + 1);
     });
   });
 
   document.querySelectorAll('[data-qty-input]').forEach((input) => {
     input.addEventListener('input', () => {
-      const normalized = Math.max(1, Number(input.value || 1));
+      const normalized = Math.max(0, Number(input.value || 0));
       if (normalized !== Number(input.value)) input.value = String(normalized);
     });
   });
