@@ -628,7 +628,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateFavoriteBadge();
   updateCartBadge();
   renderCart();
-  setupCheckoutForm();
   syncSearchFromQuery();
 });
 
