@@ -1,0 +1,8 @@
+[
+  {"id":1,"name":"Гель для стирки Active Color","category":"Гели","categoryKey":"floor","brand":"ACTIVE","volumeLabel":"2 л","volumeKey":"large","price":3600,"oldPrice":4200,"isNew":true,"badge":"new","image":"img/agel.png"},
+  {"id":2,"name":"Стиральный порошок Sanraizu Universal","category":"Стиральные порошки","categoryKey":"glass","brand":"SANRAIZU","volumeLabel":"3 кг","volumeKey":"large","price":5200,"oldPrice":5900,"isNew":false,"badge":"hit","image":"img/poroshok.png"},
+  {"id":3,"name":"Шампунь для ковров Profi Clean","category":"Шампуни","categoryKey":"dishes","brand":"PROFI","volumeLabel":"1 л","volumeKey":"medium","price":2900,"oldPrice":0,"isNew":true,"badge":"new","image":"img/Sanraizu.png"},
+  {"id":4,"name":"Антибактериальное мыло Fresh Care","category":"Мыла","categoryKey":"disinfect","brand":"FRESH CARE","volumeLabel":"500 мл","volumeKey":"small","price":1200,"oldPrice":1450,"isNew":false,"badge":"sale","image":"img/san.jpg"},
+  {"id":5,"name":"Детские подгузники Soft Baby XL","category":"Подгузники","categoryKey":"universal","brand":"SOFT BABY","volumeLabel":"52 шт","volumeKey":"xlarge","price":7800,"oldPrice":8600,"isNew":false,"badge":"hit","image":"img/acfon.jpg"},
+  {"id":6,"name":"Универсальный очиститель кухонных поверхностей","category":"Другое","categoryKey":"plumbing","brand":"HOME PRO","volumeLabel":"750 мл","volumeKey":"medium","price":2150,"oldPrice":0,"isNew":true,"badge":"new","image":"img/detergent.png"}
+]
