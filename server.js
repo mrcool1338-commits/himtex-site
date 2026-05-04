@@ -98,7 +98,7 @@ app.post('/api/subscriptions', async (req, res) => {
   const { email } = req.body || {};
 
   if (typeof email !== 'string' || !email.includes('@')) {
-    return res.status(400).json({ message: 'mrcool1338@gmail.com' });
+    return res.status(400).json({ message: 'Укажите корректный email' });
   }
 
   const targetEmail = process.env.SUBSCRIPTION_TARGET_EMAIL;
