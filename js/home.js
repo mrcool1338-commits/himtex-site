@@ -566,33 +566,6 @@ function closeCart() {
   (document.getElementById('overlay') || document.getElementById('cartOverlay'))?.classList.remove('active');
 }
 
-
-function setupCheckoutForm() {
-  const toggleButton = document.getElementById('checkoutToggleBtn');
-  const form = document.getElementById('checkoutForm');
-  if (!toggleButton || !form) return;
-
-  toggleButton.addEventListener('click', () => {
-    form.style.display = form.style.display === 'none' ? 'grid' : 'none';
-  });
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const name = document.getElementById('checkoutName')?.value.trim();
-    const phone = document.getElementById('checkoutPhone')?.value.trim();
-
-    if (!name || !phone) {
-      showToast('Заполните имя и телефон');
-      return;
-    }
-
-    showToast('Заявка отправлена! Мы скоро свяжемся с вами.');
-    form.reset();
-    form.style.display = 'none';
-  });
-}
-
 function subscribe() {
   const input = document.getElementById('emailInput');
   const email = input ? input.value.trim() : '';
