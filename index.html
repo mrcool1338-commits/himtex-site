@@ -54,8 +54,8 @@
                     <span class="fav-count" id="favCount">0</span>
                 </a>
                 <a href="#" onclick="toggleCart(event)">
-                    <span class="icon cart-icon-wrap">
-                        <img src="img/cart.png" alt="Корзина">
+                    <span class="icon -icon-wrap">
+                        <img src="img/.png" alt="Корзина">
                         <span class="badge" id="cartBadge">0</span>
                     </span>
                     <span>Корзина</span>
@@ -89,9 +89,24 @@
     </div>
     <div class="cart-footer" id="cartFooter" style="display:none">
         <div class="cart-total">
-            Итого: <strong id="cartTotal">0 тг</strong>
+            Итого: <strong id="Total">0 тг</strong>
         </div>
-        <button class="btn-checkout">Оформить заказ</button>
+        <button class="btn-checkout" type="button" id="checkoutToggleBtn">Оформить заказ →</button>
+        <form class="checkout-form" id="checkoutForm" style="display:none">
+            <label>
+                Имя
+                <input type="text" id="checkoutName" placeholder="Ваше имя" required>
+            </label>
+            <label>
+                Телефон
+                <input type="tel" id="checkoutPhone" placeholder="+7 (___) ___-__-__" required>
+            </label>
+            <label>
+                Комментарий к заказу
+                <textarea id="checkoutComment" rows="2" placeholder="Например: доставка после 18:00"></textarea>
+            </label>
+            <button class="btn-checkout" type="submit">Отправить заявку</button>
+        </form>
     </div>
 </div>
 
