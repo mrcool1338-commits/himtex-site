@@ -3487,6 +3487,10 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 640px) {
+    .footer {
+        margin-top: 36px;
+    }
+
     .footer-grid {
         grid-template-columns: 1fr;
         gap: 18px;
@@ -3494,9 +3498,49 @@ img { max-width: 100%; display: block; }
 
     .footer .container {
         padding-top: 36px;
+        padding-bottom: 16px;
+    }
+
+    .footer-col {
+        padding: 14px 14px 12px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 14px;
+        background: rgba(255,255,255,0.04);
+    }
+
+    .footer-about {
+        padding-top: 16px;
+    }
+
+    .footer-about p {
+        max-width: none;
     }
 
     .footer-col ul {
         gap: 8px;
+    }
+
+    .footer-logo {
+        font-size: 26px;
+    }
+
+    .socials {
+        gap: 10px;
+    }
+
+    .soc-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .footer-bottom {
+        margin-top: 18px;
+        padding-top: 14px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pay-icons {
+        width: 100%;
     }
 }
