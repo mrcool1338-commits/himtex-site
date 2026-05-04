@@ -33,30 +33,30 @@
     <div class="header-main">
         <div class="container">
             <a href="../pages/main.html" class="logo">
-                <img src="img/logo.png" alt="Himtex Asia Plus" class="logo-img">
+                <img src="../img/logo.png" alt="Himtex Asia Plus" class="logo-img" loading="eager" decoding="async">
             </a>
             <div class="logo-meta">
                 <strong>Himtex Asia Plus</strong>
                 <span>Оптовые поставки бытовой химии по Казахстану</span>
             </div>
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Поиск товаров...">
-                <button onclick="searchProducts()">Найти</button>
+                <input type="text" id="searchInput" placeholder="Поиск товаров, брендов..." aria-label="Поиск по каталогу" autocomplete="off">
+                <button onclick="handleSearch()">Найти</button>
             </div>
             <div class="header-actions">
                 <a href="#">
-                    <span class="icon"><img src="img/user.png" alt="Войти"></span>
+                    <span class="icon"><img src="../img/user.png" loading="lazy" decoding="async" alt="Войти"></span>
                     <span>Войти</span>
                 </a>
-                <a href="#">
-                    <span class="icon"><img src="img/like.png" alt="Избранное"></span>
+                <a href="#" onclick="toggleFav()">
+                    <span class="icon"><img src="../img/like.png" loading="lazy" decoding="async" alt="Избранное"></span>
                     <span>Избранное</span>
-                    <span class="fav-count" id="favCount">0</span>
+                    <span class="fav-count" id="favBadge" style="display:none">0</span>
                 </a>
-                <a href="#" onclick="toggleCart(event)">
-                    <span class="icon -icon-wrap">
-                        <img src="img/.png" alt="Корзина">
-                        <span class="badge" id="cartBadge">0</span>
+                <a href="#" onclick="openCart()">
+                    <span class="icon cart-icon-wrap">
+                        <img src="../img/cart.png" loading="lazy" decoding="async" alt="Корзина">
+                        <span class="badge" id="cartBadge" style="display:none">0</span>
                     </span>
                     <span>Корзина</span>
                 </a>
