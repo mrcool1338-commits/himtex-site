@@ -656,6 +656,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateCartBadge();
   renderCart();
   setupCheckoutForm();
+  syncSearchFromQuery();
 });
 
 window.changeSlide = changeSlide;
