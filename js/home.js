@@ -604,7 +604,7 @@ function closeCart() {
   (document.getElementById('overlay') || document.getElementById('cartOverlay'))?.classList.remove('active');
 }
 
-function subscribe() {
+async function subscribe() {
   const input = document.getElementById('emailInput');
   const email = input ? input.value.trim() : '';
   if (!email.includes('@')) {
@@ -612,8 +612,27 @@ function subscribe() {
     return;
   }
 
-  showToast('Спасибо за подписку!');
-  if (input) input.value = '';
+  try {
+    const response = await fetch('/api/subscriptions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const payload = await response.json();
+
+    if (!response.ok) {
+      showToast(payload.message || 'Не удалось отправить заявку');
+      return;
+    }
+
+    showToast('Спасибо за подписку!');
+    if (input) input.value = '';
+  } catch (error) {
+    showToast('Ошибка сети. Попробуйте позже');
+  }
 }
 
 function sortProducts() {
