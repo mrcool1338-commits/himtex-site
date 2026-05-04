@@ -405,8 +405,6 @@ nav a.active {
 
     .header-top-item span,
     .header-top-delivery {
-        text-align: center;
-        width: 100%;
         display: none;
     }
 
