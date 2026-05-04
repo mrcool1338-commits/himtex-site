@@ -9,21 +9,28 @@ const IDEMPOTENCY_TTL_MS = 60 * 60 * 1000;
 const idempotentOrders = new Map();
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 60;
+const ORDER_THROTTLE_WINDOW_MS = 60 * 1000;
+const ORDER_THROTTLE_MAX_REQUESTS = 10;
 const apiRequestsByIp = new Map();
+const orderRequestsByIp = new Map();
 
-function cleanupExpiredRateLimitEntries(nowMs) {
-  for (const [ip, entry] of apiRequestsByIp.entries()) {
-    if (nowMs - entry.windowStartMs >= RATE_LIMIT_WINDOW_MS) {
-      apiRequestsByIp.delete(ip);
+function cleanupExpiredEntries(storage, windowMs, nowMs) {
+  for (const [ip, entry] of storage.entries()) {
+    if (nowMs - entry.windowStartMs >= windowMs) {
+      storage.delete(ip);
     }
   }
 }
 
+function resolveClientIp(req) {
+  return req.ip || req.socket.remoteAddress || 'unknown';
+}
+
 function apiRateLimiter(req, res, next) {
   const nowMs = Date.now();
-  cleanupExpiredRateLimitEntries(nowMs);
+  cleanupExpiredEntries(apiRequestsByIp, RATE_LIMIT_WINDOW_MS, nowMs);
 
-  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  const ip = resolveClientIp(req);
   const entry = apiRequestsByIp.get(ip);
 
   if (!entry || nowMs - entry.windowStartMs >= RATE_LIMIT_WINDOW_MS) {
@@ -63,7 +70,30 @@ app.get('/api/products', async (_req, res) => {
   }
 });
 
-app.post('/api/orders', async (req, res) => {
+
+function orderIpThrottler(req, res, next) {
+  const nowMs = Date.now();
+  cleanupExpiredEntries(orderRequestsByIp, ORDER_THROTTLE_WINDOW_MS, nowMs);
+
+  const ip = resolveClientIp(req);
+  const entry = orderRequestsByIp.get(ip);
+
+  if (!entry || nowMs - entry.windowStartMs >= ORDER_THROTTLE_WINDOW_MS) {
+    orderRequestsByIp.set(ip, { windowStartMs: nowMs, count: 1 });
+    return next();
+  }
+
+  if (entry.count >= ORDER_THROTTLE_MAX_REQUESTS) {
+    const retryAfterSeconds = Math.ceil((ORDER_THROTTLE_WINDOW_MS - (nowMs - entry.windowStartMs)) / 1000);
+    res.set('Retry-After', String(Math.max(retryAfterSeconds, 1)));
+    return res.status(429).json({ message: 'Слишком много попыток оформления заказа. Попробуйте позже.' });
+  }
+
+  entry.count += 1;
+  return next();
+}
+
+app.post('/api/orders', orderIpThrottler, async (req, res) => {
   const { items } = req.body || {};
   const idempotencyKey = req.get('Idempotency-Key');
 
