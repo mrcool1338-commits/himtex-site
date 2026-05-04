@@ -11,6 +11,7 @@ const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 60;
 const ORDER_THROTTLE_WINDOW_MS = 60 * 1000;
 const ORDER_THROTTLE_MAX_REQUESTS = 10;
+const RESEND_API_URL = 'https://api.resend.com/emails';
 const apiRequestsByIp = new Map();
 const orderRequestsByIp = new Map();
 
@@ -92,6 +93,52 @@ function orderIpThrottler(req, res, next) {
   entry.count += 1;
   return next();
 }
+
+app.post('/api/subscriptions', async (req, res) => {
+  const { email } = req.body || {};
+
+  if (typeof email !== 'string' || !email.includes('@')) {
+    return res.status(400).json({ message: 'mrcool1338@gmail.com' });
+  }
+
+  const targetEmail = process.env.SUBSCRIPTION_TARGET_EMAIL;
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const fromEmail = process.env.RESEND_FROM_EMAIL;
+
+  if (!targetEmail || !resendApiKey || !fromEmail) {
+    return res.status(500).json({
+      message: 'Сервис подписки не настроен на сервере',
+    });
+  }
+
+  try {
+    const response = await fetch(RESEND_API_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: fromEmail,
+        to: [targetEmail],
+        subject: 'Новая заявка на рассылку Himtex',
+        html: `<p>Новый email для подписки: <b>${email}</b></p>`,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorPayload = await response.text();
+      return res.status(502).json({
+        message: 'Не удалось отправить заявку на email',
+        details: errorPayload,
+      });
+    }
+
+    return res.status(201).json({ message: 'Заявка отправлена' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Ошибка отправки заявки' });
+  }
+});
 
 app.post('/api/orders', orderIpThrottler, async (req, res) => {
   const { items } = req.body || {};
