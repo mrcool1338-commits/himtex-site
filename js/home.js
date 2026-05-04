@@ -16,7 +16,7 @@ const fallbackProducts = [
     image: 'img/agel.png',
   },
     {
-    id: stirka,
+    id: 10,
     name: 'Стиральный порошок Sanraizu Universal',
     category: 'Стиральные порошки',
     categoryKey: 'glass',
