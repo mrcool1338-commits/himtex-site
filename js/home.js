@@ -1,6 +1,6 @@
 let currentSlide = 0;
 
-const products = [
+const fallbackProducts = [
   {
     id: 1,
     name: 'Гель для стирки Active Color',
@@ -87,6 +87,8 @@ const products = [
   },
 ];
 
+let products = [...fallbackProducts];
+
 const state = {
   favorites: new Set(),
   cart: new Map(),
@@ -94,6 +96,21 @@ const state = {
   currentCategory: 'all',
 };
 
+
+
+async function loadProducts() {
+  try {
+    const response = await fetch('/api/products');
+    if (!response.ok) throw new Error('API unavailable');
+    const data = await response.json();
+    if (!Array.isArray(data) || !data.length) throw new Error('Invalid response');
+    products = data;
+  } catch (_error) {
+    products = [...fallbackProducts];
+  }
+
+  state.filteredProducts = [...products];
+}
 function getSelectedBrands() {
   return Array.from(document.querySelectorAll('#brandFilters input[data-brand]:checked'))
     .map((input) => input.dataset.brand);
@@ -598,11 +615,12 @@ function toggleFilters() {
   document.getElementById('filtersWrap')?.classList.toggle('active');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   setupSlider();
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
+  await loadProducts();
   renderProducts();
   setupCategories();
   setupBrandFilters();
