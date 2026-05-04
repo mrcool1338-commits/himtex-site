@@ -482,6 +482,14 @@ nav a.active {
     .header-actions a {
         font-size: 11px;
     }
+
+    .header-actions a > span:not(.icon) {
+        display: none;
+    }
+
+    .header-actions {
+        justify-content: center;
+    }
 }
 
 /* ===========================
