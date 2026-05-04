@@ -96,7 +96,42 @@ const state = {
   currentCategory: 'all',
 };
 
+const STORAGE_KEYS = {
+  favorites: 'himtex:favorites',
+  cart: 'himtex:cart',
+};
 
+function saveState() {
+  localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify(Array.from(state.favorites)));
+  localStorage.setItem(STORAGE_KEYS.cart, JSON.stringify(Array.from(state.cart.entries())));
+}
+
+function restoreState() {
+  try {
+    const favoritesRaw = localStorage.getItem(STORAGE_KEYS.favorites);
+    if (favoritesRaw) {
+      const parsed = JSON.parse(favoritesRaw);
+      if (Array.isArray(parsed)) {
+        state.favorites = new Set(parsed.map((id) => Number(id)).filter(Number.isFinite));
+      }
+    }
+
+    const cartRaw = localStorage.getItem(STORAGE_KEYS.cart);
+    if (cartRaw) {
+      const parsed = JSON.parse(cartRaw);
+      if (Array.isArray(parsed)) {
+        state.cart = new Map(
+          parsed
+            .map(([id, qty]) => [Number(id), Math.max(1, Number(qty))])
+            .filter(([id, qty]) => Number.isFinite(id) && Number.isFinite(qty)),
+        );
+      }
+    }
+  } catch (_error) {
+    state.favorites = new Set();
+    state.cart = new Map();
+  }
+}
 
 async function loadProducts() {
   try {
@@ -356,6 +391,7 @@ function toggleFavorite(productId) {
   }
 
   updateFavoriteBadge();
+  saveState();
   renderProducts(state.filteredProducts);
 }
 
@@ -372,6 +408,7 @@ function addToCart(productId, qty = 1) {
   const current = state.cart.get(productId) || 0;
   state.cart.set(productId, current + qty);
   updateCartBadge();
+  saveState();
   renderCart();
   showToast(`Добавлено в корзину: ${qty} кор.`);
 }
@@ -379,6 +416,7 @@ function addToCart(productId, qty = 1) {
 function removeFromCart(productId) {
   state.cart.delete(productId);
   updateCartBadge();
+  saveState();
   renderCart();
 }
 
@@ -620,6 +658,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
+  restoreState();
   await loadProducts();
   renderProducts();
   setupCategories();
