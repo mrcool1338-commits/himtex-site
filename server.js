@@ -5,6 +5,8 @@ const fs = require('fs/promises');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_PATH = path.join(__dirname, 'data', 'products.json');
+const IDEMPOTENCY_TTL_MS = 60 * 60 * 1000;
+const idempotentOrders = new Map();
 
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -29,7 +31,16 @@ app.get('/api/products', async (_req, res) => {
 
 app.post('/api/orders', async (req, res) => {
   const { items } = req.body || {};
+  const idempotencyKey = req.get('Idempotency-Key');
 
+  if (idempotencyKey) {
+    const cachedOrder = idempotentOrders.get(idempotencyKey);
+
+    if (cachedOrder && Date.now() - cachedOrder.createdAtMs < IDEMPOTENCY_TTL_MS) {
+      return res.status(200).json(cachedOrder.payload);
+    }
+  }
+  
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ message: 'Корзина пуста' });
   }
@@ -58,12 +69,21 @@ app.post('/api/orders', async (req, res) => {
     });
   }
 
-  return res.status(201).json({
+  const orderPayload = {
     orderId: Date.now(),
     items: orderItems,
     total,
     createdAt: new Date().toISOString(),
-  });
+  };
+
+  if (idempotencyKey) {
+    idempotentOrders.set(idempotencyKey, {
+      createdAtMs: Date.now(),
+      payload: orderPayload,
+    });
+  }
+
+  return res.status(201).json(orderPayload);
 });
 
 app.listen(PORT, () => {
