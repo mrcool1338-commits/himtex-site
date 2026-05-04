@@ -7,9 +7,43 @@ const PORT = process.env.PORT || 3000;
 const DATA_PATH = path.join(__dirname, 'data', 'products.json');
 const IDEMPOTENCY_TTL_MS = 60 * 60 * 1000;
 const idempotentOrders = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 60;
+const apiRequestsByIp = new Map();
+
+function cleanupExpiredRateLimitEntries(nowMs) {
+  for (const [ip, entry] of apiRequestsByIp.entries()) {
+    if (nowMs - entry.windowStartMs >= RATE_LIMIT_WINDOW_MS) {
+      apiRequestsByIp.delete(ip);
+    }
+  }
+}
+
+function apiRateLimiter(req, res, next) {
+  const nowMs = Date.now();
+  cleanupExpiredRateLimitEntries(nowMs);
+
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  const entry = apiRequestsByIp.get(ip);
+
+  if (!entry || nowMs - entry.windowStartMs >= RATE_LIMIT_WINDOW_MS) {
+    apiRequestsByIp.set(ip, { windowStartMs: nowMs, count: 1 });
+    return next();
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX_REQUESTS) {
+    const retryAfterSeconds = Math.ceil((RATE_LIMIT_WINDOW_MS - (nowMs - entry.windowStartMs)) / 1000);
+    res.set('Retry-After', String(Math.max(retryAfterSeconds, 1)));
+    return res.status(429).json({ message: 'Слишком много запросов. Попробуйте позже.' });
+  }
+
+  entry.count += 1;
+  return next();
+}
 
 app.use(express.json());
 app.use(express.static(__dirname));
+app.use('/api', apiRateLimiter);
 
 async function readProducts() {
   const raw = await fs.readFile(DATA_PATH, 'utf-8');
