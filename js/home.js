@@ -426,7 +426,7 @@ function renderCart() {
   const footer = document.getElementById('cartFooter') || document.getElementById('cartFoot');
   if (footer) footer.style.display = 'block';
 
-  const total = document.getElementById('cartTotal');
+  const total = document.getElementById('cartTotal') || document.getElementById('Total');
   if (total) total.textContent = formatPrice(cartTotal());
 }
 
