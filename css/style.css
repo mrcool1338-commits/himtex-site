@@ -389,16 +389,12 @@ nav a.active {
     }
 
     .header-top .container {
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: nowrap;
-        gap: 8px;
+        justify-content: center;
     }
 
     .header-top-info {
-        justify-content: flex-end;
-        gap: 8px;
-        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 10px;
     }
 
     .header-top-item {
@@ -407,17 +403,9 @@ nav a.active {
         padding: 8px;
     }
 
-    .header-top-item span {
-        display: none;
-    }
-
     .header-top-item span,
     .header-top-delivery {
-        display: inline-block;
-        font-size: 11px;
-        font-weight: 700;
-        padding: 4px 8px;
-        white-space: nowrap;
+        display: none;
     }
 
     .header-main {
