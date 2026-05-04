@@ -389,26 +389,23 @@ nav a.active {
     }
 
     .header-top .container {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+        justify-content: center;
     }
 
     .header-top-info {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
+        justify-content: center;
+        gap: 10px;
     }
 
     .header-top-item {
         justify-content: center;
-        text-align: center;
-        width: 100%;
+        width: auto;
+        padding: 8px;
     }
 
+    .header-top-item span,
     .header-top-delivery {
-        text-align: center;
-        width: 100%;
+        display: none;
     }
 
     .header-main {
