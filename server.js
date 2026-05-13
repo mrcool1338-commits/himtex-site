@@ -1,121 +1,53 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs/promises');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_PATH = path.join(__dirname, 'data', 'products.json');
-const IDEMPOTENCY_TTL_MS = 60 * 60 * 1000;
-const idempotentOrders = new Map();
-const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-const RATE_LIMIT_MAX_REQUESTS = 60;
-const ORDER_THROTTLE_WINDOW_MS = 60 * 1000;
-const ORDER_THROTTLE_MAX_REQUESTS = 10;
-const RESEND_API_URL = 'https://api.resend.com/emails';
-const apiRequestsByIp = new Map();
-const orderRequestsByIp = new Map();
-
-function cleanupExpiredEntries(storage, windowMs, nowMs) {
-  for (const [ip, entry] of storage.entries()) {
-    if (nowMs - entry.windowStartMs >= windowMs) {
-      storage.delete(ip);
-    }
-  }
-}
-
-function resolveClientIp(req) {
-  return req.ip || req.socket.remoteAddress || 'unknown';
-}
-
-function apiRateLimiter(req, res, next) {
-  const nowMs = Date.now();
-  cleanupExpiredEntries(apiRequestsByIp, RATE_LIMIT_WINDOW_MS, nowMs);
-
-  const ip = resolveClientIp(req);
-  const entry = apiRequestsByIp.get(ip);
-
-  if (!entry || nowMs - entry.windowStartMs >= RATE_LIMIT_WINDOW_MS) {
-    apiRequestsByIp.set(ip, { windowStartMs: nowMs, count: 1 });
-    return next();
-  }
-
-  if (entry.count >= RATE_LIMIT_MAX_REQUESTS) {
-    const retryAfterSeconds = Math.ceil((RATE_LIMIT_WINDOW_MS - (nowMs - entry.windowStartMs)) / 1000);
-    res.set('Retry-After', String(Math.max(retryAfterSeconds, 1)));
-    return res.status(429).json({ message: 'Слишком много запросов. Попробуйте позже.' });
-  }
-
-  entry.count += 1;
-  return next();
-}
 
 app.use(express.json());
 app.use(express.static(__dirname));
-app.use('/api', apiRateLimiter);
 
-async function readProducts() {
-  const raw = await fs.readFile(DATA_PATH, 'utf-8');
-  return JSON.parse(raw);
-}
+const products = [
+  {
+    id: 1,
+    name: 'Гель для стирки Active Color',
+    category: 'Гели',
+    categoryKey: 'floor',
+    brand: 'ACTIVE',
+    volumeLabel: '2 л',
+    volumeKey: 'large',
+    price: 3600,
+    oldPrice: 4200,
+    isNew: true,
+    badge: 'new',
+    image: 'img/agel.png',
+  },
+];
 
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok' });
+app.get('/api/products', (_req, res) => {
+  res.json(products);
 });
-
-app.get('/api/products', async (_req, res) => {
-  try {
-    const products = await readProducts();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: 'Не удалось получить товары' });
-  }
-});
-
-
-function orderIpThrottler(req, res, next) {
-  const nowMs = Date.now();
-  cleanupExpiredEntries(orderRequestsByIp, ORDER_THROTTLE_WINDOW_MS, nowMs);
-
-  const ip = resolveClientIp(req);
-  const entry = orderRequestsByIp.get(ip);
-
-  if (!entry || nowMs - entry.windowStartMs >= ORDER_THROTTLE_WINDOW_MS) {
-    orderRequestsByIp.set(ip, { windowStartMs: nowMs, count: 1 });
-    return next();
-  }
-
-  if (entry.count >= ORDER_THROTTLE_MAX_REQUESTS) {
-    const retryAfterSeconds = Math.ceil((ORDER_THROTTLE_WINDOW_MS - (nowMs - entry.windowStartMs)) / 1000);
-    res.set('Retry-After', String(Math.max(retryAfterSeconds, 1)));
-    return res.status(429).json({ message: 'Слишком много попыток оформления заказа. Попробуйте позже.' });
-  }
-
-  entry.count += 1;
-  return next();
-}
 
 app.post('/api/subscriptions', async (req, res) => {
-  const { whatsapp, contactType, name, comment, source } = req.body || {};
-  const normalizedWhatsapp = typeof whatsapp === 'string'
-    ? whatsapp.replace(/[^\d+]/g, '')
-    : '';
+  const { whatsapp, contactType = 'whatsapp' } = req.body || {};
+  const normalizedPhone = String(whatsapp || '').replace(/[^\d+]/g, '');
 
-  if (normalizedWhatsapp.length < 10) {
-    return res.status(400).json({ message: 'Укажите корректный номер WhatsApp' });
+  if (normalizedPhone.length < 10) {
+    return res.status(400).json({ message: 'Некорректный номер WhatsApp' });
   }
 
-  const targetEmail = process.env.SUBSCRIPTION_TARGET_EMAIL;
   const resendApiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.RESEND_FROM_EMAIL;
+  const toEmail = process.env.RESEND_TO_EMAIL;
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 
-  if (!targetEmail || !resendApiKey || !fromEmail) {
-    return res.status(500).json({
-      message: 'Сервис подписки не настроен на сервере',
+  if (!resendApiKey || !toEmail) {
+    return res.status(200).json({
+      message: 'Заявка принята локально. Добавьте RESEND_API_KEY и RESEND_TO_EMAIL в .env для отправки email.',
     });
   }
 
   try {
-    const response = await fetch(RESEND_API_URL, {
+    const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${resendApiKey}`,
@@ -123,91 +55,28 @@ app.post('/api/subscriptions', async (req, res) => {
       },
       body: JSON.stringify({
         from: fromEmail,
-        to: [targetEmail],
-        subject: 'Новая заявка на WhatsApp-контакт Himtex',
-        html: `
-          <h3>Новая заявка с сайта Himtex</h3>
-          <p><b>Контакт:</b> ${normalizedWhatsapp}</p>
-          <p><b>Тип:</b> ${contactType || 'whatsapp'}</p>
-          <p><b>Имя:</b> ${name || 'не указано'}</p>
-          <p><b>Комментарий:</b> ${comment || '—'}</p>
-          <p><b>Источник:</b> ${source || 'newsletter'}</p>
-          <p><b>Дата (UTC):</b> ${new Date().toISOString()}</p>
-        `,
+        to: [toEmail],
+        subject: 'Новая заявка с Himtex сайта',
+        html: `<p><strong>Тип контакта:</strong> ${contactType}</p><p><strong>WhatsApp:</strong> ${normalizedPhone}</p>`,
       }),
     });
 
     if (!response.ok) {
-      const errorPayload = await response.text();
-      return res.status(502).json({
-        message: 'Не удалось отправить заявку на email',
-        details: errorPayload,
-      });
+      const errorBody = await response.text();
+      return res.status(502).json({ message: `Resend error: ${errorBody}` });
     }
 
-    return res.status(201).json({ message: 'Заявка отправлена' });
-  } catch (error) {
-    return res.status(500).json({ message: 'Ошибка отправки заявки' });
+    return res.json({ message: 'Заявка успешно отправлена' });
+  } catch (_error) {
+    return res.status(500).json({ message: 'Сетевая ошибка при отправке email' });
   }
 });
 
-app.post('/api/orders', orderIpThrottler, async (req, res) => {
-  const { items } = req.body || {};
-  const idempotencyKey = req.get('Idempotency-Key');
-
-  if (idempotencyKey) {
-    const cachedOrder = idempotentOrders.get(idempotencyKey);
-
-    if (cachedOrder && Date.now() - cachedOrder.createdAtMs < IDEMPOTENCY_TTL_MS) {
-      return res.status(200).json(cachedOrder.payload);
-    }
-  }
-  
-  if (!Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({ message: 'Корзина пуста' });
-  }
-
-  const products = await readProducts();
-  const productsById = new Map(products.map((product) => [product.id, product]));
-
-  const orderItems = [];
-  let total = 0;
-
-  for (const item of items) {
-    const product = productsById.get(Number(item.productId));
-    const quantity = Math.max(1, Number(item.quantity) || 1);
-
-    if (!product) {
-      return res.status(400).json({ message: `Товар с id=${item.productId} не найден` });
-    }
-
-    total += product.price * quantity;
-    orderItems.push({
-      productId: product.id,
-      name: product.name,
-      quantity,
-      price: product.price,
-      subtotal: product.price * quantity,
-    });
-  }
-
-  const orderPayload = {
-    orderId: Date.now(),
-    items: orderItems,
-    total,
-    createdAt: new Date().toISOString(),
-  };
-
-  if (idempotencyKey) {
-    idempotentOrders.set(idempotencyKey, {
-      createdAtMs: Date.now(),
-      payload: orderPayload,
-    });
-  }
-
-  return res.status(201).json(orderPayload);
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'main.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`Backend started: http://localhost:${PORT}`);
+  // eslint-disable-next-line no-console
+  console.log(`Server started on http://localhost:${PORT}`);
 });
