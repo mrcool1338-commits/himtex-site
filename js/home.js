@@ -620,7 +620,7 @@ async function subscribe() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ whatsapp: normalizedPhone, contactType: 'whatsapp' }),
+      body: JSON.stringify({ whatsapp: normalizedPhone, clientNumber: normalizedPhone, contactType: 'whatsapp' }),
     });
 
     const payload = await response.json();
