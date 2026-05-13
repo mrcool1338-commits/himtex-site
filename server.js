@@ -12,7 +12,7 @@ const products = [
     id: 1,
     name: 'Гель для стирки Active Color',
     category: 'Гели',
-    categoryKey: 'floor',
+    categoryKey: 'gel',
     brand: 'ACTIVE',
     volumeLabel: '2 л',
     volumeKey: 'large',
@@ -24,15 +24,32 @@ const products = [
   },
 ];
 
+const escapeHtml = (value) => String(value)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
+const normalizePhone = (value) => {
+  const raw = String(value || '').trim();
+  const hasLeadingPlus = raw.startsWith('+');
+  const digits = raw.replace(/\D/g, '');
+
+  return hasLeadingPlus ? `+${digits}` : digits;
+};
+
+const isValidPhone = (value) => /^\+?\d{10,15}$/.test(value);
+
 app.get('/api/products', (_req, res) => {
   res.json(products);
 });
 
 app.post('/api/subscriptions', async (req, res) => {
   const { whatsapp, contactType = 'whatsapp' } = req.body || {};
-  const normalizedPhone = String(whatsapp || '').replace(/[^\d+]/g, '');
+  const normalizedPhone = normalizePhone(whatsapp);
 
-  if (normalizedPhone.length < 10) {
+  if (!isValidPhone(normalizedPhone)) {
     return res.status(400).json({ message: 'Некорректный номер WhatsApp' });
   }
 
@@ -57,7 +74,7 @@ app.post('/api/subscriptions', async (req, res) => {
         from: fromEmail,
         to: [toEmail],
         subject: 'Новая заявка с Himtex сайта',
-        html: `<p><strong>Тип контакта:</strong> ${contactType}</p><p><strong>WhatsApp:</strong> ${normalizedPhone}</p>`,
+        html: `<p><strong>Тип контакта:</strong> ${escapeHtml(contactType)}</p><p><strong>WhatsApp:</strong> ${escapeHtml(normalizedPhone)}</p>`,
       }),
     });
 
