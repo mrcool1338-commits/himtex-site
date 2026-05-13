@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { Resend } = require('resend');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -64,26 +65,19 @@ app.post('/api/subscriptions', async (req, res) => {
   }
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${resendApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: fromEmail,
-        to: [toEmail],
-        subject: `Новая заявка с Himtex сайта: ${normalizedPhone}`,
-        html: `<p><strong>Тип контакта:</strong> ${escapeHtml(contactType)}</p><p><strong>Номер клиента:</strong> ${escapeHtml(normalizedPhone)}</p><p><strong>WhatsApp:</strong> ${escapeHtml(normalizedPhone)}</p>`,
-      }),
+    const resend = new Resend(resendApiKey);
+    const { data, error } = await resend.emails.send({
+      from: fromEmail,
+      to: [toEmail],
+      subject: `Новая заявка с Himtex сайта: ${normalizedPhone}`,
+      html: `<p><strong>Тип контакта:</strong> ${escapeHtml(contactType)}</p><p><strong>Номер клиента:</strong> ${escapeHtml(normalizedPhone)}</p><p><strong>WhatsApp:</strong> ${escapeHtml(normalizedPhone)}</p>`,
     });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      return res.status(502).json({ message: `Resend error: ${errorBody}` });
+    if (error) {
+      return res.status(502).json({ message: `Resend error: ${error.message}` });
     }
 
-    return res.json({ message: 'Заявка успешно отправлена' });
+    return res.json({ message: 'Заявка успешно отправлена', emailId: data?.id });
   } catch (_error) {
     return res.status(500).json({ message: 'Сетевая ошибка при отправке email' });
   }
