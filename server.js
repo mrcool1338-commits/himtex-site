@@ -46,8 +46,8 @@ app.get('/api/products', (_req, res) => {
 });
 
 app.post('/api/subscriptions', async (req, res) => {
-  const { whatsapp, contactType = 'whatsapp' } = req.body || {};
-  const normalizedPhone = normalizePhone(whatsapp);
+  const { whatsapp, clientNumber, contactType = 'whatsapp' } = req.body || {};
+  const normalizedPhone = normalizePhone(clientNumber || whatsapp);
 
   if (!isValidPhone(normalizedPhone)) {
     return res.status(400).json({ message: 'Некорректный номер WhatsApp' });
@@ -73,8 +73,8 @@ app.post('/api/subscriptions', async (req, res) => {
       body: JSON.stringify({
         from: fromEmail,
         to: [toEmail],
-        subject: 'Новая заявка с Himtex сайта',
-        html: `<p><strong>Тип контакта:</strong> ${escapeHtml(contactType)}</p><p><strong>WhatsApp:</strong> ${escapeHtml(normalizedPhone)}</p>`,
+        subject: `Новая заявка с Himtex сайта: ${normalizedPhone}`,
+        html: `<p><strong>Тип контакта:</strong> ${escapeHtml(contactType)}</p><p><strong>Номер клиента:</strong> ${escapeHtml(normalizedPhone)}</p><p><strong>WhatsApp:</strong> ${escapeHtml(normalizedPhone)}</p>`,
       }),
     });
 
