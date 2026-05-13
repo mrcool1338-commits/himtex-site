@@ -95,10 +95,13 @@ function orderIpThrottler(req, res, next) {
 }
 
 app.post('/api/subscriptions', async (req, res) => {
-  const { email } = req.body || {};
+  const { whatsapp, contactType, name, comment, source } = req.body || {};
+  const normalizedWhatsapp = typeof whatsapp === 'string'
+    ? whatsapp.replace(/[^\d+]/g, '')
+    : '';
 
-  if (typeof email !== 'string' || !email.includes('@')) {
-    return res.status(400).json({ message: 'Укажите корректный email' });
+  if (normalizedWhatsapp.length < 10) {
+    return res.status(400).json({ message: 'Укажите корректный номер WhatsApp' });
   }
 
   const targetEmail = process.env.SUBSCRIPTION_TARGET_EMAIL;
@@ -121,8 +124,16 @@ app.post('/api/subscriptions', async (req, res) => {
       body: JSON.stringify({
         from: fromEmail,
         to: [targetEmail],
-        subject: 'Новая заявка на рассылку Himtex',
-        html: `<p>Новый email для подписки: <b>${email}</b></p>`,
+        subject: 'Новая заявка на WhatsApp-контакт Himtex',
+        html: `
+          <h3>Новая заявка с сайта Himtex</h3>
+          <p><b>Контакт:</b> ${normalizedWhatsapp}</p>
+          <p><b>Тип:</b> ${contactType || 'whatsapp'}</p>
+          <p><b>Имя:</b> ${name || 'не указано'}</p>
+          <p><b>Комментарий:</b> ${comment || '—'}</p>
+          <p><b>Источник:</b> ${source || 'newsletter'}</p>
+          <p><b>Дата (UTC):</b> ${new Date().toISOString()}</p>
+        `,
       }),
     });
 
