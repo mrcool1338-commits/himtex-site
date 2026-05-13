@@ -605,10 +605,12 @@ function closeCart() {
 }
 
 async function subscribe() {
-  const input = document.getElementById('emailInput');
-  const email = input ? input.value.trim() : '';
-  if (!email.includes('@')) {
-    showToast('Введите корректный email');
+  const input = document.getElementById('whatsappInput');
+  const whatsapp = input ? input.value.trim() : '';
+  const normalizedPhone = whatsapp.replace(/[^\d+]/g, '');
+
+  if (normalizedPhone.length < 10) {
+    showToast('Введите корректный номер WhatsApp');
     return;
   }
 
@@ -618,7 +620,7 @@ async function subscribe() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ whatsapp: normalizedPhone, contactType: 'whatsapp' }),
     });
 
     const payload = await response.json();
@@ -628,7 +630,7 @@ async function subscribe() {
       return;
     }
 
-    showToast('Спасибо за подписку!');
+    showToast('Спасибо! Мы свяжемся с вами в WhatsApp.');
     if (input) input.value = '';
   } catch (error) {
     showToast('Ошибка сети. Попробуйте позже');
