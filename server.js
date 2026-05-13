@@ -104,9 +104,9 @@ app.post('/api/subscriptions', async (req, res) => {
     return res.status(400).json({ message: 'Укажите корректный номер WhatsApp' });
   }
 
-  const targetEmail = process.env.SUBSCRIPTION_TARGET_EMAIL;
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.RESEND_FROM_EMAIL;
+  const targetEmail = process.env.SUBSCRIPTION_TARGET_EMAIL=mrcool1338@gmail.com;
+  const resendApiKey = process.env.RESEND_API_KEY=re_Xcj9hBwt_5iUicpThN8teALy7wcdouLQp;
+  const fromEmail = process.env.RESEND_FROM_EMAIL=info@himtexasiaplus.kz;
 
   if (!targetEmail || !resendApiKey || !fromEmail) {
     return res.status(500).json({
